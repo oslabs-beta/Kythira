@@ -8,12 +8,12 @@ const pool = new Pool({
   connectionString: PG_URI,
 });
 
-const currentTable = `CREATE TABLE IF NOT EXISTS user (
+const currentTable = `CREATE TABLE IF NOT EXISTS "user"(
     _id SERIAL PRIMARY KEY,
     username VARCHAR(20) UNIQUE NOT NULL,
     pw VARCHAR NOT NULL,
-    email VARCHAR UNIQUE NOT NULL,
-)`;
+    email VARCHAR UNIQUE NOT NULL
+);`;
 pool.query(currentTable);
 console.log("Current Table is created!");
 
