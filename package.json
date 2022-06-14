@@ -1,8 +1,8 @@
 {
-  "name": "my-new-app",
-  "productName": "my-new-app",
+  "name": "kythira",
+  "productName": "Kythira",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Kubernetes visualizer",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
@@ -13,8 +13,8 @@
   },
   "keywords": [],
   "author": {
-    "name": "D-Genuario",
-    "email": "dominicgenuario@gmail.com"
+    "name": "Team Kythira",
+    "email": "kythira@gmail.com"
   },
   "license": "MIT",
   "config": {
@@ -80,13 +80,17 @@
     "eslint-plugin-import": "^2.26.0",
     "fork-ts-checker-webpack-plugin": "^6.5.2",
     "node-loader": "^2.0.0",
+    "sass": "^1.52.3",
+    "sass-loader": "^13.0.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.0",
-    "typescript": "~4.5.4"
+    "typescript": "~4.5.4",
+    "webpack": "^5.73.0"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "react-router-dom": "^6.3.0"
   }
 }

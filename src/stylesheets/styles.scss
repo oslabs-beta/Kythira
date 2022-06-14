@@ -1,0 +1,21 @@
+#mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.verticalContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    border-color: black;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    padding: 6px 12px 6px 12px;
+    margin: 2.5px;
+}
