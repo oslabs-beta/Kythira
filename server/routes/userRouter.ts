@@ -2,7 +2,7 @@ import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 
 // necassary controller to be included - only userController for now
-const userController = require("../controllers/userController")
+import { userController }  from "../controllers/userController";
 
 const router = express.Router();
 
@@ -18,4 +18,4 @@ router.post('/signup', userController.newAccount, (request:Request, response:Res
 
 
 
-module.exports = router;
+export default router;

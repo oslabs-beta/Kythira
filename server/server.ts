@@ -6,7 +6,7 @@ const PORT : number = 3000;
 app = express();
 
 //Routers to be imported
-const userRouter = require("./routes/userRouter");
+import userRouter from "./routes/userRouter";
 
 
 app.use(express.json());
@@ -38,4 +38,4 @@ app.listen(PORT, () => {
     console.log(`Listening on port: ${PORT} `);
 });
 
-module.exports = app;
+export default app;
