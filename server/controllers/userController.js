@@ -58,7 +58,7 @@ exports.userController = {
                     console.log('Login Check in process');
                     username = req.body.username;
                     password = req.body.password;
-                    findUserPw = "SELECT pw FROM \"user\" WHERE \"username\" = '".concat(username, "'");
+                    findUserPw = "SELECT pw FROM \"user\" WHERE \"username\" = '".concat(username, "';");
                     return [4 /*yield*/, pool.query(findUserPw)];
                 case 1:
                     data = _a.sent();
@@ -87,34 +87,58 @@ exports.userController = {
         });
     }); },
     newAccount: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, username, email, password, hashedPassword, createUser, newUserDetails, tempData, newUser, err_2;
+        var _a, username, email, password, hashedPassword, createUser, newUserDetails, tempData, findNewUser, data, newUserId, err_2;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 4, , 5]);
+                    _b.trys.push([0, 5, , 6]);
                     console.log("Account creation in progress");
                     _a = req.body, username = _a.username, email = _a.email, password = _a.password;
+                    console.log("Request Body:", username, email, password);
                     return [4 /*yield*/, bcrypt.hash(password, 10)];
                 case 1:
                     hashedPassword = _b.sent();
-                    createUser = "INSERT INTO \"user\" (username, pw, email) VALUES ($1, $2, $3)";
-                    newUserDetails = [username, hashedPassword, email];
+                    console.log("Hashed Password:", hashedPassword);
+                    createUser = "INSERT INTO \"user\" (username, pw, email) VALUES ($1, $2, $3);";
+                    newUserDetails = ["".concat(username), "".concat(hashedPassword), "".concat(email)];
                     return [4 /*yield*/, pool.query(createUser, newUserDetails)];
                 case 2:
                     tempData = _b.sent();
-                    return [4 /*yield*/, tempData];
+                    findNewUser = "SELECT * FROM \"user\" WHERE \"username\" = '".concat(username, "';");
+                    return [4 /*yield*/, pool.query(findNewUser)];
                 case 3:
-                    newUser = _b.sent();
-                    res.locals.newUser = newUser;
-                    return [2 /*return*/, next()];
+                    data = _b.sent();
+                    return [4 /*yield*/, data.rows[0]._id];
                 case 4:
+                    newUserId = _b.sent();
+                    // const newUser : any = await tempData;
+                    res.locals.newUserId = newUserId;
+                    return [2 /*return*/, next()];
+                case 5:
                     err_2 = _b.sent();
                     return [2 /*return*/, next({
                             log: "Error in userController.newAccount: ".concat(err_2),
                             message: { err: 'An error in userController.newAccount' }
                         })];
-                case 5: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     }); }
 };
+// newAccount : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> =>{
+//     try{
+//         console.log("Account creation in progress");
+//         const {username, email, password} : {username:string, email:string, password:string} = req.body
+//         const hashedPassword : string = await bcrypt.hash(password, 10);
+//         const createUser : string = `INSERT INTO "user" (username, pw, email) VALUES ($1, $2, $3)`;
+//         const newUserDetails : string[] = [username, hashedPassword, email];
+//         const tempData : any = await pool.query(createUser, newUserDetails);
+//         const newUser : any = await tempData;
+//         res.locals.newUser = newUser;
+//         return next();
+//     }catch(err){
+//         return next({
+//             log: `Error in userController.newAccount: ${err}`,
+//             message: { err: 'An error in userController.newAccount'}
+//         })
+//     }
