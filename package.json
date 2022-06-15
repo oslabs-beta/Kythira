@@ -48,6 +48,7 @@
           "@electron-forge/plugin-webpack",
           {
             "mainConfig": "./webpack.main.config.js",
+            "devContentSecurityPolicy": "default-src * 'unsafe-inline' 'unsafe-eval'",
             "renderer": {
               "config": "./webpack.renderer.config.js",
               "entryPoints": [
@@ -83,9 +84,9 @@
     "eslint-plugin-import": "^2.26.0",
     "fork-ts-checker-webpack-plugin": "^6.5.2",
     "node-loader": "^2.0.0",
+    "nodemon": "^2.0.16",
     "sass": "^1.52.3",
     "sass-loader": "^13.0.0",
-    "nodemon": "^2.0.16",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.3.0",
     "typescript": "~4.5.4",
@@ -93,6 +94,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.1",
     "pg": "^8.7.3",
