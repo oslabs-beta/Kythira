@@ -1,7 +1,7 @@
 import * as express from "express";
 import * as path from "path";
 let app: express.Application | undefined = undefined;
-const PORT : number = 3000;
+const PORT : number = 8080;
 
 app = express();
 

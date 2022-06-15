@@ -13,7 +13,7 @@ const LoginDisplay = () => {
 
         console.log('user to be verified ', user)
 
-        fetch('/user/login', {
+        fetch('http://localhost:8080/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'Application/JSON'

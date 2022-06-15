@@ -15,7 +15,7 @@ export default function Signup() {
 
     console.log('user to be signedup ', user)
 
-    fetch('/user/signup', {
+    fetch('http://localhost:8080/user/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'Application/JSON'
