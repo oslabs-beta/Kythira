@@ -42,6 +42,10 @@ var bcrypt = require("bcrypt");
 var pg_1 = require("pg");
 console.log("Environment Variable", process.env.NODE_ENV);
 var PG_URI = '';
+// To set up the test environment, packages: cross-env (npm i -D cross-env)
+// In package.json we had to add a new script called "test"
+// In the "test" script, we set the process.env.NODE_ENV to test
+// Set conditional statement to check if server is running on "test" or development
 if (process.env.NODE_ENV === "test") {
     PG_URI = 'postgres://vwfofczb:Jy7dhkeZsVCm5HhzcWJaF1DkCGRBALB4@queenie.db.elephantsql.com/vwfofczb';
     console.log("NOW WE ARE IN THE TEST ENVIRONMENT");

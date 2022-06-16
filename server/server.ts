@@ -18,6 +18,11 @@ app.use('/user', userRouter);
 
 // psql -d postgres://borrqxeq:rFiEZWIXW_B92wRXM9ADuQ4qIvB4bzER@fanny.db.elephantsql.com/borrqxeq -f databaseTable.sql
 
+//Catch all error handler
+app.use((req,res)=>{
+    return res.status(404).send('You in the wrong place')
+});
+
 //Global Error handler
 app.use((err, req, res, next) => {
     // This will define an interface here to determine the element types of keys
