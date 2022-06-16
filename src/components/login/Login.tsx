@@ -1,9 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginDisplay = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [verified, setVerified] = useState<boolean | undefined>();
+
+    const navigate = useNavigate();
 
     const verifyLogin = () => {
         const user = {
@@ -22,7 +25,16 @@ const LoginDisplay = () => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                console.log('Response from backend', data);
+                if(data === true){
+                    setVerified(data);
+                    navigate('/home');
+                } else {
+                    setVerified(false);
+                    setUsername('');
+                    setPassword('');
+
+                }
             })
             .catch(err => console.log('verifyLogin ERROR: ', err))
     }
@@ -38,15 +50,17 @@ const LoginDisplay = () => {
             type === 'password' ? 'text' : 'password'
         );
     }
-    
+
     return (
         <div className='verticalContainer'>         
             <div>
-                <input type='text' placeholder='username' onChange={e => setUsername(e.target.value)}/>
+                <input type='text' placeholder='username' value={username} onChange={e => setUsername(e.target.value)}/>
             </div>
             <div>
-                <input id='passwordInput' type='password' placeholder='password' onChange={e => setPassword(e.target.value)}/>
+                <input id='passwordInput' type='password' placeholder='password' value={password} onChange={e => setPassword(e.target.value)}/>
             </div>
+            {verified === false && <div style={{color: 'red'}}>Error: Incorrect username or password</div>
+            }
             <div>
                 <span>Show password</span><input type='checkbox' onClick={togglePasswordVisibility}/>
             </div>
