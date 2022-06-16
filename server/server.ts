@@ -2,7 +2,7 @@ import * as express from "express";
 import * as cors from "cors";
 import * as path from "path";
 let app: express.Application | undefined = undefined;
-const PORT = 3000;
+const PORT = 8080;
 
 app = express();
 

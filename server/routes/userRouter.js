@@ -12,4 +12,5 @@ router.post('/login', userController_1.userController.loginCheck, function (requ
 router.post('/signup', userController_1.userController.newAccount, function (request, response) {
     return response.status(200).json(response.locals.newUserId);
 });
+
 exports["default"] = router;

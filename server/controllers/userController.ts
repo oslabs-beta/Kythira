@@ -54,7 +54,6 @@ export const userController = {
             console.log("Request Body:", username, email, password);
             const hashedPassword : string = await bcrypt.hash(password, 10);
             console.log("Hashed Password:", hashedPassword);
-
             const createUser = `INSERT INTO "user" (username, pw, email) VALUES ($1, $2, $3);`;
             const newUserDetails : string[] = [`${username}`, `${hashedPassword}`, `${email}`];
             const tempData : any = await pool.query(createUser, newUserDetails);
