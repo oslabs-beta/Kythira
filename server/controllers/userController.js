@@ -69,13 +69,8 @@ exports.userController = {
                     return [4 /*yield*/, bcrypt.compare(password, storedPw)];
                 case 3:
                     passwordVerified = _a.sent();
-                    if (passwordVerified) {
-                        return [2 /*return*/, next()];
-                    }
-                    else {
-                        throw new Error('Incorrect username/password');
-                    }
-                    return [3 /*break*/, 5];
+                    res.locals.verification = passwordVerified;
+                    return [2 /*return*/, next()];
                 case 4:
                     err_1 = _a.sent();
                     return [2 /*return*/, next({

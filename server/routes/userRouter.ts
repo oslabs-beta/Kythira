@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Router to check login info, Middleware is not ready
 router.post('/login', userController.loginCheck, (request:Request, response:Response) => {
-    return response.status(200).send("LOGIN SUCCESFULL");
+    return response.status(200).json(response.locals.verification);
 });
 
 // Router to create a new account, middleware is not ready
