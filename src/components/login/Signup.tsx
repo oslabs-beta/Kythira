@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
 
   const verifySignup = () => {
     const user = {
@@ -25,6 +27,7 @@ export default function Signup() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
+            navigate('/home');
         })
         .catch(err => console.log('verifyLogin ERROR: ', err))
 }
