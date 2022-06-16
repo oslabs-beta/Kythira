@@ -36,17 +36,24 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.userController = void 0;
+exports.userController = exports.pool = void 0;
 //import db from '../models/model.js';
 var bcrypt = require("bcrypt");
 var pg_1 = require("pg");
-var PG_URI = 'postgres://borrqxeq:rFiEZWIXW_B92wRXM9ADuQ4qIvB4bzER@fanny.db.elephantsql.com/borrqxeq';
+console.log("Environment Variable", process.env.NODE_ENV);
+var PG_URI = '';
+if (process.env.NODE_ENV === "test") {
+    PG_URI = 'postgres://vwfofczb:Jy7dhkeZsVCm5HhzcWJaF1DkCGRBALB4@queenie.db.elephantsql.com/vwfofczb';
+    console.log("NOW WE ARE IN THE TEST ENVIRONMENT");
+}
+else
+    PG_URI = 'postgres://borrqxeq:rFiEZWIXW_B92wRXM9ADuQ4qIvB4bzER@fanny.db.elephantsql.com/borrqxeq';
 // create a new pool here using the connection string above
-var pool = new pg_1.Pool({
+exports.pool = new pg_1.Pool({
     connectionString: PG_URI
 });
 var currentTable = "CREATE TABLE IF NOT EXISTS \"user\"(\n    _id SERIAL PRIMARY KEY,\n    username VARCHAR(20) UNIQUE NOT NULL,\n    pw VARCHAR NOT NULL,\n    email VARCHAR UNIQUE NOT NULL\n    );";
-pool.query(currentTable);
+exports.pool.query(currentTable);
 console.log("Current Table is created!");
 exports.userController = {
     loginCheck: function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
@@ -56,10 +63,11 @@ exports.userController = {
                 case 0:
                     _a.trys.push([0, 4, , 5]);
                     console.log('Login Check in process');
+                    console.log('ENVIRONMENT IS ====>', process.env.NODE_ENV);
                     username = req.body.username;
                     password = req.body.password;
                     findUserPw = "SELECT pw FROM \"user\" WHERE \"username\" = '".concat(username, "';");
-                    return [4 /*yield*/, pool.query(findUserPw)];
+                    return [4 /*yield*/, exports.pool.query(findUserPw)];
                 case 1:
                     data = _a.sent();
                     return [4 /*yield*/, data.rows[0].pw];
@@ -88,6 +96,7 @@ exports.userController = {
                 case 0:
                     _b.trys.push([0, 5, , 6]);
                     console.log("Account creation in progress");
+                    console.log('ENVIRONMENT IS ====>', process.env.NODE_ENV);
                     _a = req.body, username = _a.username, email = _a.email, password = _a.password;
                     console.log("Request Body:", username, email, password);
                     return [4 /*yield*/, bcrypt.hash(password, 10)];
@@ -96,11 +105,11 @@ exports.userController = {
                     console.log("Hashed Password:", hashedPassword);
                     createUser = "INSERT INTO \"user\" (username, pw, email) VALUES ($1, $2, $3);";
                     newUserDetails = ["".concat(username), "".concat(hashedPassword), "".concat(email)];
-                    return [4 /*yield*/, pool.query(createUser, newUserDetails)];
+                    return [4 /*yield*/, exports.pool.query(createUser, newUserDetails)];
                 case 2:
                     tempData = _b.sent();
                     findNewUser = "SELECT * FROM \"user\" WHERE \"username\" = '".concat(username, "';");
-                    return [4 /*yield*/, pool.query(findNewUser)];
+                    return [4 /*yield*/, exports.pool.query(findNewUser)];
                 case 3:
                     data = _b.sent();
                     return [4 /*yield*/, data.rows[0]._id];
