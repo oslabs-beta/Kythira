@@ -33,12 +33,9 @@ export const userController = {
             const data: any = await pool.query(findUserPw);
             const storedPw: string = await data.rows[0].pw;
             console.log("STORED PASSWORD", storedPw);
-            const passwordVerified : boolean = await bcrypt.compare(password, storedPw);
-            if (passwordVerified){
-                return next();
-            }else{
-                throw new Error('Incorrect username/password');
-            }
+            const passwordVerified : boolean = await bcrypt.compare(password, storedPw);  
+            res.locals.verification = passwordVerified;
+            return next();
         }catch(err){
             return next({
                 log: `Error i userController.loginCheck: ${err}`,
