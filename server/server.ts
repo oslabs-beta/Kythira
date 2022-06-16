@@ -1,7 +1,8 @@
 import * as express from "express";
+import * as cors from "cors";
 import * as path from "path";
 let app: express.Application | undefined = undefined;
-const PORT : number = 8080;
+const PORT = 8080;
 
 app = express();
 
@@ -11,6 +12,7 @@ import userRouter from "./routes/userRouter";
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use(cors());
 
 app.use('/user', userRouter);
 
