@@ -16,6 +16,4 @@ router.post('/signup', userController.newAccount, (request:Request, response:Res
     return response.status(200).json(response.locals.newUserId);
 })
 
-
-
 export default router;
