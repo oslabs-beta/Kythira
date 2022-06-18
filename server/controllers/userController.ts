@@ -1,12 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
 //import db from '../models/model.js';
 import * as bcrypt from 'bcrypt';
-
 import {Pool} from 'pg';
-const PG_URI =  'postgres://borrqxeq:rFiEZWIXW_B92wRXM9ADuQ4qIvB4bzER@fanny.db.elephantsql.com/borrqxeq';
+console.log("Environment Variable", process.env.NODE_ENV)
+let PG_URI = '';
+
+// To set up the test environment, packages: cross-env (npm i -D cross-env)
+// In package.json we had to add a new script called "test"
+// In the "test" script, we set the process.env.NODE_ENV to test
+// Set conditional statement to check if server is running on "test" or development
+if(process.env.NODE_ENV === "test"){
+    PG_URI = 'postgres://vwfofczb:Jy7dhkeZsVCm5HhzcWJaF1DkCGRBALB4@queenie.db.elephantsql.com/vwfofczb';
+    console.log("NOW WE ARE IN THE TEST ENVIRONMENT");
+}else PG_URI =  'postgres://borrqxeq:rFiEZWIXW_B92wRXM9ADuQ4qIvB4bzER@fanny.db.elephantsql.com/borrqxeq';
 
 // create a new pool here using the connection string above
-const pool = new Pool({
+export const pool = new Pool({
     connectionString: PG_URI,
     // waitForConnections: true,
     // connectionLimit: 10,
@@ -27,6 +36,7 @@ export const userController = {
     loginCheck : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> =>{
         try{
             console.log('Login Check in process');
+            console.log('ENVIRONMENT IS ====>', process.env.NODE_ENV);
             const username : string = req.body.username;
             const password : string = req.body.password;
             const findUserPw  = `SELECT pw FROM "user" WHERE "username" = '${username}';`;
@@ -47,6 +57,7 @@ export const userController = {
     newAccount : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> =>{
         try{
             console.log("Account creation in progress");
+            console.log('ENVIRONMENT IS ====>', process.env.NODE_ENV);
             const {username, email, password} : {username:string, email:string, password:string} = req.body
             console.log("Request Body:", username, email, password);
             const hashedPassword : string = await bcrypt.hash(password, 10);

@@ -8,6 +8,7 @@ app = express();
 
 //Routers to be imported
 import userRouter from "./routes/userRouter";
+import k8Router from "./routes/k8Router";
 
 
 app.use(express.json());
@@ -15,8 +16,14 @@ app.use(express.urlencoded({extended:true}));
 app.use(cors());
 
 app.use('/user', userRouter);
+app.use('/k8', k8Router);
 
 // psql -d postgres://borrqxeq:rFiEZWIXW_B92wRXM9ADuQ4qIvB4bzER@fanny.db.elephantsql.com/borrqxeq -f databaseTable.sql
+
+//Catch all error handler
+app.use((req,res)=>{
+    return res.status(404).send('You in the wrong place')
+});
 
 //Global Error handler
 app.use((err, req, res, next) => {
