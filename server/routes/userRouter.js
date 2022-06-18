@@ -12,4 +12,10 @@ router.post('/login', userController_1.userController.loginCheck, function (requ
 router.post('/signup', userController_1.userController.newAccount, function (request, response) {
     return response.status(200).json(response.locals.newUserId);
 });
+// Router for oAuth
+router.get('/github/oauth', function (req, res) {
+    var url = "https://github.com/login/oauth/authorize?" +
+        "client_id=" + "e4a70dc5fa8c873142f8";
+    res.redirect(url);
+});
 exports["default"] = router;

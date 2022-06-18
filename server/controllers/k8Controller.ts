@@ -28,7 +28,7 @@ export const k8Controller = {
     try {
       const pods : podObject[] = [];    
       // Asynchronously gets all pod data in default namespace, stored in res.body.items as an array (each element is a single pod)
-      await coreV1Api.listNamespacedPod('default').then((res) => {
+      await coreV1Api.listNamespacedPod('default').then((res:any) => {
         console.log('Pods found.');
         for (let i = 0; i < res.body.items.length; i++) {
           pods.push({ 
@@ -65,7 +65,7 @@ export const k8Controller = {
   localServices : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     try {
       const services : serviceObject[] = [];
-      await coreV1Api.listNameSpacedService('default').then((res) => {
+      await coreV1Api.listNameSpacedService('default').then((res:any) => {
         for (let i = 0; i < res.body.items.length; i++) {
           services.push({
             name: res.body.items[i].metadata.name,

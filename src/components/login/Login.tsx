@@ -50,6 +50,14 @@ const LoginDisplay = () => {
             type === 'password' ? 'text' : 'password'
         );
     }
+        // Githuboauth is added by Nevruz
+        const gitHubAuth = () => {
+            fetch(`http://localhost:8080/user/github/oauth`)
+            .then(response => response.json())
+            .then(response => {
+                console.log("GITHUB AUTH IS IN PROGRESS!!! ===>");
+            })
+        }
 
     return (
         <div className='verticalContainer'>         
@@ -69,6 +77,11 @@ const LoginDisplay = () => {
             </div>
             <div>
                 <span>Don't have an account?</span><Link to="/signup">Sign up</Link>
+            </div>
+
+            {/* THIS PART IS ADDED BY NEVRUZ */}
+            <div>
+                <button onClick={gitHubAuth}>Login with Github</button>
             </div>
         </div>
     )
