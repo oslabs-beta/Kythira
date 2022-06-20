@@ -1,5 +1,5 @@
-import * as express from "express";
-import * as cors from "cors";
+import express, {Request, Response, NextFunction } from 'express';
+import cors from "cors";
 import * as path from "path";
 let app: express.Application | undefined = undefined;
 const PORT = 8080;
@@ -28,7 +28,7 @@ app.use((req,res)=>{
 });
 
 //Global Error handler
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response) => {
     // This will define an interface here to determine the element types of keys
     interface globalError {
         log: string,
@@ -46,7 +46,7 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`Listening on port: ${PORT} `);
+    console.log(`Listening on port -HELL YEAAAH IT IS WORKING: ${PORT} `);
 });
 
 export default app;

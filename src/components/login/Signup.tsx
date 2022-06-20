@@ -43,7 +43,7 @@ export default function Signup() {
     );
 }
     return (
-      <main className='verticalContainer'>
+      <main className='verticalFlex'>
         <h2>Create an account</h2>
         <div>
           <input type='text' placeholder='email' onChange={e => setEmail(e.target.value)}/>

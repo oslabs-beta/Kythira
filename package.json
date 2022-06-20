@@ -10,7 +10,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
-    "dev": "nodemon server/server.js",
+    "dev": "nodemon server/server.ts",
     "test": "cross-env NODE_ENV=test jest --verbose"
   },
   "keywords": [],
@@ -98,6 +98,7 @@
     "supertest": "^6.2.3",
     "ts-jest": "^28.0.5",
     "ts-loader": "^9.3.0",
+    "ts-node": "^10.8.1",
     "typescript": "~4.5.4",
     "webpack": "^5.73.0"
   },
