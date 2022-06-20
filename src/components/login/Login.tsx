@@ -52,7 +52,7 @@ const LoginDisplay = () => {
     }
 
     return (
-        <div className='verticalContainer'>         
+        <div className='verticalFlex'>         
             <div>
                 <input type='text' placeholder='username' value={username} onChange={e => setUsername(e.target.value)}/>
             </div>

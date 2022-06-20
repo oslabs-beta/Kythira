@@ -5,11 +5,26 @@
     align-items: center;
 }
 
-.verticalContainer {
+.verticalFlex {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+}
+
+.horizontalFlex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(50px, 1fr));
+    background-color: gray;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 5px;
 }
 
 button {
@@ -18,4 +33,9 @@ button {
     border: 1px solid transparent;
     padding: 6px 12px 6px 12px;
     margin: 2.5px;
+}
+
+button:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    cursor: pointer;
 }
