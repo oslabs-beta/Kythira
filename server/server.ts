@@ -46,7 +46,7 @@ app.use((err: Error, req: Request, res: Response) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`Listening on port -HELL YEAAAH IT IS WORKING: ${PORT} `);
+    console.log(`Listening on port: ${PORT} `);
 });
 
 export default app;
