@@ -20,6 +20,6 @@ If you do not have a Kubernetes cluster up and running, use Minikube to quickly 
   * `brew install kubectl` 
 7. To generate pods, run the following commands:
   * `kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4`
-  * `kubectl expose deployment hello-minikube --type=NodePort --port=9090`
+  * `kubectl expose deployment hello-minikube --type=NodePort --port=8080`
 
 8. This will create a deployment that will genereate a pod with the provided image. Exposing the deployment simply means we are able to access the port. 

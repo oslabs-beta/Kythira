@@ -15,11 +15,5 @@
     },
     "jsx": "react"
   },
-  "include": ["src/**/*", "server/**/*"],
-  "exclude": [
-    "node_modules",
-    "./node_modules",
-    "./node_modules/*",
-    "./node_modules/@types/node/index.d.ts",
-  ]
+  "include": ["src/**/*"]
 }

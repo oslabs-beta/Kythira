@@ -15,10 +15,10 @@ const pool = new Pool({
   pool.query(currentTable);
   console.log("Current Table is created!");
   
-  // module.exports = {
-  //   query: (text:string, params:string, callback: Function) => {
-  //     console.log('Executed the following query: *****', text);
-  //     return pool.query(text, params, callback);
-  //   },
-  // };
+  module.exports = {
+    query: (text:string, params:string, callback: Function) => {
+      console.log('Executed the following query: *****', text);
+      return pool.query(text, params, callback);
+    },
+  };
   
