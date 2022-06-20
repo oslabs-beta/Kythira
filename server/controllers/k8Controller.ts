@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import k8s from '@kubernetes/client-node';
+import * as k8s from '@kubernetes/client-node';
 const kc = new k8s.KubeConfig();
 kc.loadFromDefault();
 // Allows us to query kubernetes for App/V1 objects like deployments
@@ -120,7 +120,7 @@ export const k8Controller = {
             references: []
           });
           for (const labelTag in res.body.items[i].metadata.labels) {
-            deployments[i].labels[labelTag] = res.body.itesm[i].metadata.labels[labelTag];
+            deployments[i].labels.set(labelTag,res.body.items[i].metadata.labels[labelTag]);
           }
           for (let j = 0; j < res.body.items[i].metadata.ownerReferences.length; i++) {
             deployments[i].references.push(res.body.items[i].metadata.ownerReferences[j]);

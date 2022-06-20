@@ -1,6 +1,5 @@
-import * as express from "express";
-import { Request, Response, NextFunction } from 'express';
-import * as cors from "cors";
+import express, {Request, Response, NextFunction } from 'express';
+import cors from "cors";
 import * as path from "path";
 let app: express.Application | undefined = undefined;
 const PORT = 8080;
@@ -14,7 +13,9 @@ import k8Router from "./routes/k8Router";
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+}));
 
 app.use('/user', userRouter);
 app.use('/k8', k8Router);

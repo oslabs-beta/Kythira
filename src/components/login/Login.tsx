@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+// import { ipcRenderer } from 'electron';
 
 const LoginDisplay = () => {
     const [username, setUsername] = useState('');
@@ -50,7 +51,24 @@ const LoginDisplay = () => {
             type === 'password' ? 'text' : 'password'
         );
     }
+    // Githuboauth is added by Nevruz
+    const gitHubAuth = () => {
+        console.log("YOU HAVE CLICKED LOGIN WITH GITHUB");
+        fetch(`http://localhost:8080/user/github/signin`)
+        .then(response => response.json())
+        .then(response => {
+            console.log("GITHUB AUTH IS IN PROGRESS!!! ===>");
+        })
+    }
 
+    // const githubOnClick = () => {
+    //     console.log('Github OAuth clicked');
+    //     ipcRenderer.send('open-github',null);
+    // }
+
+    // const githubOnClick = () => {
+    //     shell.openExternal('https://github.com/login/oauth/authorize?scope=user&client_id=e4a70dc5fa8c873142f8');
+    // }    
     return (
         <div className='verticalFlex'>         
             <div>
@@ -69,6 +87,11 @@ const LoginDisplay = () => {
             </div>
             <div>
                 <span>Don't have an account?</span><Link to="/signup">Sign up</Link>
+            </div>
+            {/* THIS PART IS ADDED BY NEVRUZ */}
+            <div>
+                {/* <a href="https://github.com/login/oauth/authorize?client_id=e4a70dc5fa8c873142f8">Login with Github</a> */}
+                {/* <button onClick={githubOnClick} >Login with GitHub</button> */}
             </div>
         </div>
     )
