@@ -1,4 +1,5 @@
 import * as express from "express";
+import { Request, Response, NextFunction } from 'express';
 import * as cors from "cors";
 import * as path from "path";
 let app: express.Application | undefined = undefined;
@@ -26,7 +27,7 @@ app.use((req,res)=>{
 });
 
 //Global Error handler
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response) => {
     // This will define an interface here to determine the element types of keys
     interface globalError {
         log: string,
