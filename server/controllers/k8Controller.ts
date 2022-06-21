@@ -8,10 +8,9 @@ const appV1Api = kc.makeApiClient(k8s.AppsV1Api);
 const coreV1Api = kc.makeApiClient(k8s.CoreV1Api);
 
 interface Pod {
-  clusterName: string,
+  namespace: string,
   podName: string,
   createdAt: Date,
-  namespace: string,
   status: string,
   nodeName: string,
   containers: object[]
@@ -31,6 +30,7 @@ interface Controller {
 
 interface Deployment {
   name: string,
+  replicas: number,
   kind: string,
   status: string,
   namespace: string,
@@ -49,15 +49,13 @@ export const k8Controller = {
         console.log('Pods found.');
         for (let i = 0; i < res.body.items.length; i++) {
           pods.push({ 
-            clusterName: res.body.items[i].metadata.clusterName, 
+            namespace: res.body.items[i].metadata.namespace, 
             podName: res.body.items[i].metadata.name, 
             createdAt: res.body.items[i].metadata.creationTimestamp, 
-            namespace: res.body.items[i].metadata.namespace, 
             status: res.body.items[i].status.containerStatuses[0].state.running ? 'Running': res.body.items[i].status.containerStatuses[0].state.waiting.reason, 
             nodeName: res.body.items[i].spec.nodeName, 
             containers: []
           });
-          console.log("Pods ==> ", pods);
           // Populating container array with list of containers
           for (let j = 0; j < res.body.items[i].spec.containers.length; j++) {
             pods[i].containers.push({
@@ -67,7 +65,6 @@ export const k8Controller = {
           }
         }
       });
-      console.log('Pods: \n', pods);
       res.locals.pods = pods;
       return next();
     } 
@@ -112,6 +109,7 @@ export const k8Controller = {
         for (let i = 0; i < res.body.items.length; i++) {
           deployments.push({
             name: res.body.items[i].metadata.name,
+            replicas: res.body.items[i].spec.replicas,
             kind: res.body.items[i].kind,
             status: res.body.items[i].status.conditions[0].status,
             namespace: res.body.items[i].metadata.namespace,
