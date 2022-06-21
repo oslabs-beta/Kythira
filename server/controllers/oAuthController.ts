@@ -14,7 +14,7 @@ export const oAuthController = {
     // }
     getToken : async(req:Request, res: Response, next: NextFunction) => {
         const requestToken = req.query.code;
-        console.log('HERE IS YOUR ACCESS CODE',requestToken);
+        
         const url = `https://github.com/login/oauth/access_token?client_id=${client_id}&client_secret=${client_secret}&code=${requestToken}`;
         let token;
         try {
@@ -26,6 +26,7 @@ export const oAuthController = {
                 }
             });
             res.locals.accessToken = token.data.access_token;
+            console.log('HERE IS YOUR ACCESS CODE',res.locals.accessToken);
             return next();
         } catch(err){
         return next({
@@ -47,8 +48,9 @@ export const oAuthController = {
                     Authorization: `token ${res.locals.accessToken}`
                 }
             });
-            console.log('Response: \n',currentUser);
+            console.log('Response: \n',currentUser.data.login);
             res.locals.githubUser = currentUser.data.login;
+            // We can store user ID & access token in our db
             return next();
         }catch(err){
             return next({
