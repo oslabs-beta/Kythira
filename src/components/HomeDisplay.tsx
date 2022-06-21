@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Tree from './Tree';
 
 export default function HomeDisplay() {
     return (
