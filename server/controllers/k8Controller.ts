@@ -41,7 +41,6 @@ interface Deployment {
 
 export const k8Controller = {
   localPods : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
-    console.log('Getting pods...');
     try {
       const pods : Pod[] = [];    
       // Asynchronously gets all pod data in default namespace, stored in res.body.items as an array (each element is a single pod)

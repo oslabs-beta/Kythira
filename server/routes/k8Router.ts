@@ -55,12 +55,7 @@ router.get('/pods', k8Controller.localPods, (req:Request, res:Response) => {
         } as D3Response);
       }
     });
-    for (let j = 0; j < response[namespace].length; j++) {
-      console.log('Pods:',response[namespace].children[j]);
-    }
-
   } 
-  console.log('Response: -------------------------- \n',response);
   res.locals.clusters = response;
   return res.status(200).json(res.locals.clusters);
 });
