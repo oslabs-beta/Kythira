@@ -16,7 +16,6 @@ const LoginDisplay = () => {
         }
 
         console.log('user to be verified ', user)
-
         fetch('http://localhost:8080/user/login', {
             method: 'POST',
             headers: {
@@ -80,7 +79,7 @@ const LoginDisplay = () => {
             {verified === false && <div style={{color: 'red'}}>Error: Incorrect username or password</div>
             }
             <div>
-                <span>Show password</span><input type='checkbox' onClick={togglePasswordVisibility}/>
+                <span>Show password</span><input data-testid='passwordToggle' type='checkbox' onClick={togglePasswordVisibility}/>
             </div>
             <div>
                 <Link to="/forgotPassword">Forgot password?</Link><button onClick={verifyLogin}>Login</button>

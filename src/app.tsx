@@ -14,7 +14,7 @@ const App = () => {
         <h1>🔭 Kythira 🔭</h1>
       </main>
       <Routes>
-        {/* <Route path='/main_window' element={<LoginDisplay />} /> */}
+        {/* <Route path='/' element={<LoginDisplay />} /> */}
         <Route path='/main_window' element={<LoginDisplay />} />
         <Route path='signup' element={<Signup />} />
         <Route path='forgotPassword' element={<ForgotPassword />} />
@@ -27,3 +27,5 @@ const App = () => {
 const container = document.getElementById('app');
 const root = createRoot(container!)
 root.render(<App/>);
+
+export default App;
