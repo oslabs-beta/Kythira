@@ -3,7 +3,7 @@ import Tree from '../Tree'
 
 export default function Visualizer() {
     return (
-        <div className='grid'>
+        <div data-testid='tempID' className='grid'>
             <Tree />
         </div>
     )

@@ -11,9 +11,10 @@ import {Pool} from 'pg';
 // The script below didnt work since it was sending the request as it is from postman.
 // const server = 'http://localhost:8080'
 
-import app from '../server/server.js'
+// import app from '../../../../server/server.js'
+import app from '../../../server/server.js'
 
-import { pool } from '../server/controllers/userController.js'
+import { pool } from '../../../server/controllers/userController.js'
 
 describe ('database table creation test', ()=> {
     beforeAll( async ()=>{
