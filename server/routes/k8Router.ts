@@ -45,11 +45,10 @@ router.get('/pods', k8Controller.localPods, (req:Request, res:Response) => {
       } as D3Response);
     }
     
-    console.log('Node:',response[namespace].children);
     // Pod level - (adding pod to given node)
     response[namespace].children.forEach((node: { name: string; children: D3Response[]; }) => {
       if (node.name === `Node: ${nodeName}`) {
-
+        // Container level - (adding container(s) to given pod)
         node.children.push({
           name: `Pod: ${podName}`,
           children: containers
@@ -59,12 +58,11 @@ router.get('/pods', k8Controller.localPods, (req:Request, res:Response) => {
     for (let j = 0; j < response[namespace].length; j++) {
       console.log('Pods:',response[namespace].children[j]);
     }
-    // Container level - (adding container(s) to given pod)
 
   } 
   console.log('Response: -------------------------- \n',response);
-  res.locals.temp = response;
-  return res.status(200).json(res.locals.temp);
+  res.locals.clusters = response;
+  return res.status(200).json(res.locals.clusters);
 });
 
 router.get('/deployments', k8Controller.localDeployments, (req:Request, res:Response) => {

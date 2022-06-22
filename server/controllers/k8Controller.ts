@@ -46,7 +46,6 @@ export const k8Controller = {
       const pods : Pod[] = [];    
       // Asynchronously gets all pod data in default namespace, stored in res.body.items as an array (each element is a single pod)
       await coreV1Api.listNamespacedPod('default').then((res:any) => {
-        console.log('Pods found.');
         for (let i = 0; i < res.body.items.length; i++) {
           pods.push({ 
             namespace: res.body.items[i].metadata.namespace, 
