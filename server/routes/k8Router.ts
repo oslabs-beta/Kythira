@@ -4,16 +4,19 @@ import { k8Controller }  from "../controllers/k8Controller";
 
 const router = express.Router();
 
-interface Container {
-  name: string,
-  image: string
-}
-
 interface D3Response {
   name?: string,
   children?: D3Response[]
 }
 
+router.get('/namespaces',k8Controller.localNamespaces, (req:Request,res:Response) => {
+  // First 4 namespaces are always (in order): 
+  // 1. 'default': self explanatory
+  // 2. 'kube-node-lease': holds Lease objects (every time a Node status updates, Lease objects are generated - could be useful for monitoring)
+  // 3. 'kube-public': contains configMap that is readable by all users (does not require authentication)
+  // 4. 'kube-system': we literally will never need this. Contains system resources for Kubernetes' operations
+  return res.status(200).json(res.locals.namespaces);
+});
 
 // Router to fetch the data from clusters
 router.get('/pods', k8Controller.localPods, (req:Request, res:Response) => {
@@ -68,8 +71,8 @@ router.get('/services', k8Controller.localServices, (req:Request, res:Response) 
   return res.status(200).json(res.locals.services);
 });
 
-// router.post('/deployment', k8Controller.localPods, (req:Request, res:Response) => {
-//   return res.status(200).json(res.locals.deploymentCreated);
-// });
+router.post('/newDeployment', k8Controller.newLocalDeployment, (req:Request, res:Response) => {
+  return res.status(200).json(res.locals.deploymentCreated);
+});
 
 export default router;
