@@ -30,7 +30,7 @@ const createWindow = (): void => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
-  shell.openExternal("https://github.com/login/oauth/authorize?scope=user&client_id=e4a70dc5fa8c873142f8");
+  // shell.openExternal("https://github.com/login/oauth/authorize?scope=user&client_id=e4a70dc5fa8c873142f8");
 
   // // NEV ADDITION
   // const url:any = "https://github.com/login/oauth/authorize?scope=user&client_id=e4a70dc5fa8c873142f8";

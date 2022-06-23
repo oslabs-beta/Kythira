@@ -15,5 +15,6 @@
     },
     "jsx": "react"
   },
-  "include": ["src/**/*", "server/**/*", "jest.config.ts", "jest.setup.ts" ]
+  "include": ["src/**/*", "server/**/*", "jest.config.ts", "jest.setup.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
