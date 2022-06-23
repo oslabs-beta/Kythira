@@ -2,6 +2,7 @@ import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 import axios from 'axios';
 import { oAuthController } from "../controllers/oAuthController";
+import { cookieController } from "../controllers/cookieController";
 
 // necassary controller to be included - only userController for now
 import { userController }  from "../controllers/userController";
@@ -37,8 +38,8 @@ router.post('/signup', userController.newAccount, (request:Request, response:Res
 // This router will get the access code after successful login
 // Then send a post request to github to get the token
 // NOTE : Will we save this token in the db or once github grants permision, we will just allow the user get in the app?
-router.get('/github/oauth', oAuthController.getToken, oAuthController.getUserId, (request:Request, response:Response) => {
-    return response.status(200).send('YOU HAVE GOT YOUR ACCESS TOKEN!');
+router.get('/github/oauth', oAuthController.getToken, oAuthController.getUserId,cookieController.setCookie, (request:Request, response:Response) => {
+    return response.status(200).send('ACCESS IS GRANTED, YOU CAN CLOSE THIS WINDOW');
 } )
 
 
