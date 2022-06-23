@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
 
-export default function Navigator(){
+interface NavigatorProps {
+    updateNamespace: (targetNamespace:string) => void
+}
 
-    const [pods, setPods] = useState([]);
+export default function Navigator(props: NavigatorProps){
 
-    const getPods = () => {
-        fetch('http://localhost:8080/k8/pods', {
+    const [namespaces, setNamespaces] = useState([{namespace: 'test'}, {namespace: 'test2'}, {namespace: 'test3'}]);
+
+    const getNamespaces = () => {
+        fetch('http://localhost:8080/k8/namespaces', {
             method: 'GET',
             headers: {
                 'Content-Type': 'Application/JSON'
@@ -13,26 +17,27 @@ export default function Navigator(){
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Pods from backend', data);
-                setPods(data);
+                console.log('Namespaces from backend', data);
+                setNamespaces(data);
             })
             .catch(err => console.log('verifyLogin ERROR: ', err))
     }
 
-    const podGroup = pods.map((elem) => {
+    const namespaceGroup = namespaces.map((elem) => {
+        // if(namespace.name !== || namespace.name !== || namespace.name !==)
         return (
             <div className='horizontalFlex'>
-                <div>Pod {elem.podName}</div>
-                <button>Visualize Me</button>
+                <div>Pod {elem.namespace}</div>
+                <button onClick={() => {props.updateNamespace(elem.namespace)}}>Visualize Me</button>
             </div>
         )
     })
-
+    
     return (
         <div>
-            <span>Active pods below</span><button onClick={getPods}>Click me to refresh pods</button>
+            <span>Active pods below</span><button onClick={getNamespaces}>Click me to refresh pods</button>
             <div className='grid'>
-            {podGroup}
+            {namespaceGroup}
             </div>
         </div>
 
