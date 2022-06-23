@@ -40,11 +40,32 @@ interface Deployment {
 }
 
 export const k8Controller = {
+  localNamespaces : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+    try {
+      const namespaceArr:string[] = [];
+      await coreV1Api.listNamespace().then((res:any) => {
+        res.body.items.forEach((item:any) => {
+          namespaceArr.push(item.metadata.name);
+        })
+      });
+      res.locals.namespaces = namespaceArr;
+      console.log(res.locals.namespaces);
+      return next();
+    }
+    catch (err) {
+      return next({
+        log: `Error in k8Controller.localNamespaces: ${err}`,
+        message: { err: 'An error in k8Controller.localNamespaces occurred.'}
+      });
+    }
+  },
+
   localPods : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     try {
-      const pods : Pod[] = [];    
-      // Asynchronously gets all pod data in default namespace, stored in res.body.items as an array (each element is a single pod)
-      await coreV1Api.listNamespacedPod('default').then((res:any) => {
+      const pods : Pod[] = [];
+      // Asynchronously gets all pod data in defined namespace, stored in res.body.items as an array (each element is a single pod)
+      const { namespace } = req.body;
+      await coreV1Api.listNamespacedPod(namespace).then((res:any) => {
         for (let i = 0; i < res.body.items.length; i++) {
           pods.push({ 
             namespace: res.body.items[i].metadata.namespace, 
@@ -69,82 +90,117 @@ export const k8Controller = {
     catch(err){
       return next({
         log: `Error in k8Controller.localPods: ${err}`,
-        message: { err: 'An error in k8Controller.localPods'}
-    })
-    }
-  },
-
-  localServices : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
-    try {
-      const services : Service[] = [];
-      await coreV1Api.listNamespacedService('default').then((res:any) => {
-        for (let i = 0; i < res.body.items.length; i++) {
-          services.push({
-            name: res.body.items[i].metadata.name,
-            ports: [],
-            selector: res.body.items[i].spec.selector || undefined,
-          });
-          for (let j = 0; j < res.body.items[i].spec.ports.length; i++) {
-            services[i].ports.push(res.body.items[i].spec.ports[j].port);
-          }
-        }
-      });
-      res.locals.services = services;
-      return next();
-    }
-    catch (err) {
-      return next({
-        log: `Error in k8Controller.localServices: ${err}`,
-        message: { err: 'An error in k8Controller.localServices'}
+        message: { err: 'An error in k8Controller.localPods occurred.'}
       });
     }
   },
 
-  localDeployments : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
-    try {
-      const deployments: Deployment[] = [];
-      await appV1Api.listNamespacedDeployment('default').then((res:any) => {
-        for (let i = 0; i < res.body.items.length; i++) {
-          deployments.push({
-            name: res.body.items[i].metadata.name,
-            replicas: res.body.items[i].spec.replicas,
-            kind: res.body.items[i].kind,
-            status: res.body.items[i].status.conditions[0].status,
-            namespace: res.body.items[i].metadata.namespace,
-            createdAt: res.body.items[i].metadata.creationTimestamp,
-            labels: new Map(),
-            references: []
-          });
-          for (const labelTag in res.body.items[i].metadata.labels) {
-            deployments[i].labels.set(labelTag,res.body.items[i].metadata.labels[labelTag]);
-          }
-          for (let j = 0; j < res.body.items[i].metadata.ownerReferences.length; i++) {
-            deployments[i].references.push(res.body.items[i].metadata.ownerReferences[j]);
-          }
-        }
-      });
-      res.locals.deployments = deployments;
-      return next();
-    }
-    catch (err) {
-      return next({
-        log: `Error in k8Controller.localDeployments: ${err}`,
-        message: { err: 'An error in k8Controller.localServices'}
-      });
-    }
-  },
-
-  // newLocalDeployment : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+  // localServices : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
   //   try {
-      // const { metadata, spec } = req.body.deployment;
-      // const { name } = metadata;
-      // const { selector, replicas, template } = spec;
-      // const { matchLabels } =
+  //     const services : Service[] = [];
+  //     await coreV1Api.listNamespacedService('default').then((res:any) => {
+  //       for (let i = 0; i < res.body.items.length; i++) {
+  //         services.push({
+  //           name: res.body.items[i].metadata.name,
+  //           ports: [],
+  //           selector: res.body.items[i].spec.selector || undefined,
+  //         });
+  //         for (let j = 0; j < res.body.items[i].spec.ports.length; i++) {
+  //           services[i].ports.push(res.body.items[i].spec.ports[j].port);
+  //         }
+  //       }
+  //     });
+  //     res.locals.services = services;
+  //     return next();
   //   }
-  //   catch(err) {
+  //   catch (err) {
+  //     return next({
+  //       log: `Error in k8Controller.localServices: ${err}`,
+  //       message: { err: 'An error in k8Controller.localServices occurred.'}
+  //     });
+  //   }
+  // },
 
+  // localDeployments : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+  //   try {
+  //     const deployments: Deployment[] = [];
+  //     await appV1Api.listNamespacedDeployment('default').then((res:any) => {
+  //       for (let i = 0; i < res.body.items.length; i++) {
+  //         deployments.push({
+  //           name: res.body.items[i].metadata.name,
+  //           replicas: res.body.items[i].spec.replicas,
+  //           kind: res.body.items[i].kind,
+  //           status: res.body.items[i].status.conditions[0].status,
+  //           namespace: res.body.items[i].metadata.namespace,
+  //           createdAt: res.body.items[i].metadata.creationTimestamp,
+  //           labels: new Map(),
+  //           references: []
+  //         });
+  //         for (const labelTag in res.body.items[i].metadata.labels) {
+  //           deployments[i].labels.set(labelTag,res.body.items[i].metadata.labels[labelTag]);
+  //         }
+  //         for (let j = 0; j < res.body.items[i].metadata.ownerReferences.length; i++) {
+  //           deployments[i].references.push(res.body.items[i].metadata.ownerReferences[j]);
+  //         }
+  //       }
+  //     });
+  //     res.locals.deployments = deployments;
+  //     return next();
   //   }
-  // }
+  //   catch (err) {
+  //     return next({
+  //       log: `Error in k8Controller.localDeployments: ${err}`,
+  //       message: { err: 'An error in k8Controller.localServices occurred.'}
+  //     });
+  //   }
+  // },
+
+  newLocalDeployment : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+    try {
+      // name: string
+      // ????? kind: string?
+      // selectorLabels: obj/map (key-value pair)
+      // replicas: number
+      // metadataLabels: obj/map
+      // containers: array of container objects { name: string, image: string }
+      const { name, selectorLabels, replicas, metadataLabels, containers } = req.body;
+
+      // Constructing deployment object
+      const newDeployment = {
+        metadata: {
+          name: name
+        },
+        spec: {
+          selector: {
+            matchLabels: selectorLabels
+          },
+          replicas: replicas,
+          template: {
+            metadata: {
+              labels: metadataLabels
+            },
+            spec: {
+              containers: containers
+            }
+          }
+        }
+      };
+
+      // API call
+
+      await appV1Api.createNamespacedDeployment('default', newDeployment).then((res:any) => {
+        console.log(`Deployment ${newDeployment.metadata.name} successfully created`);
+      });      
+      res.locals.deploymentCreated = true;
+      return next();
+    }
+    catch(err) {
+      return next({
+        log: `Error in k8Controller.newLocalDeployment: ${err}`,
+        message: { err: 'An error in k8Controller.newLocalDeployment occurred.'}
+      });
+    }
+  }
 
 
 };
