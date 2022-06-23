@@ -59,39 +59,41 @@ export const k8Controller = {
       });
     }
   },
-  localPods : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
-    try {
-      const pods : Pod[] = [];
-      // Asynchronously gets all pod data in default namespace, stored in res.body.items as an array (each element is a single pod)
-      await coreV1Api.listNamespacedPod('default').then((res:any) => {
-        for (let i = 0; i < res.body.items.length; i++) {
-          pods.push({ 
-            namespace: res.body.items[i].metadata.namespace, 
-            podName: res.body.items[i].metadata.name, 
-            createdAt: res.body.items[i].metadata.creationTimestamp, 
-            status: res.body.items[i].status.containerStatuses[0].state.running ? 'Running': res.body.items[i].status.containerStatuses[0].state.waiting.reason, 
-            nodeName: res.body.items[i].spec.nodeName, 
-            containers: []
-          });
-          // Populating container array with list of containers
-          for (let j = 0; j < res.body.items[i].spec.containers.length; j++) {
-            pods[i].containers.push({
-              name: res.body.items[i].spec.containers[j].name,
-              image: res.body.items[i].spec.containers[j].image,
-            });
-          }
-        }
-      });
-      res.locals.pods = pods;
-      return next();
-    } 
-    catch(err){
-      return next({
-        log: `Error in k8Controller.localPods: ${err}`,
-        message: { err: 'An error in k8Controller.localPods occurred.'}
-      });
-    }
-  },
+
+  localPods : async (req: Request,)
+  // localPods : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+  //   try {
+  //     const pods : Pod[] = [];
+  //     // Asynchronously gets all pod data in default namespace, stored in res.body.items as an array (each element is a single pod)
+  //     await coreV1Api.listNamespacedPod('default').then((res:any) => {
+  //       for (let i = 0; i < res.body.items.length; i++) {
+  //         pods.push({ 
+  //           namespace: res.body.items[i].metadata.namespace, 
+  //           podName: res.body.items[i].metadata.name, 
+  //           createdAt: res.body.items[i].metadata.creationTimestamp, 
+  //           status: res.body.items[i].status.containerStatuses[0].state.running ? 'Running': res.body.items[i].status.containerStatuses[0].state.waiting.reason, 
+  //           nodeName: res.body.items[i].spec.nodeName, 
+  //           containers: []
+  //         });
+  //         // Populating container array with list of containers
+  //         for (let j = 0; j < res.body.items[i].spec.containers.length; j++) {
+  //           pods[i].containers.push({
+  //             name: res.body.items[i].spec.containers[j].name,
+  //             image: res.body.items[i].spec.containers[j].image,
+  //           });
+  //         }
+  //       }
+  //     });
+  //     res.locals.pods = pods;
+  //     return next();
+  //   } 
+  //   catch(err){
+  //     return next({
+  //       log: `Error in k8Controller.localPods: ${err}`,
+  //       message: { err: 'An error in k8Controller.localPods occurred.'}
+  //     });
+  //   }
+  // },
 
   localServices : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     try {

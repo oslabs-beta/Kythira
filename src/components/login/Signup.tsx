@@ -46,19 +46,20 @@ export default function Signup() {
       <main className='verticalFlex'>
         <h2>Create an account</h2>
         <div>
-          <input type='text' placeholder='email' onChange={e => setEmail(e.target.value)}/>
+          <input type='text' placeholder='email' value={email} onChange={e => setEmail(e.target.value)}/>
         </div>
         <div>
-          <input type='text' placeholder='username' onChange={e => setUsername(e.target.value)}/>
+          <input type='text' placeholder='username' value={username} onChange={e => setUsername(e.target.value)}/>
         </div>
         <div>
-          <input id='passwordInput' type='password' placeholder='password' onChange={e => setPassword(e.target.value)}/>
+          <input id='passwordInput' type='password' placeholder='password' value={password}  onChange={e => setPassword(e.target.value)}/>
         </div>
         <div>
-          <span>Show password</span><input type='checkbox' onClick={togglePasswordVisibility}/>
+          <span>Show password</span><input data-testid='passwordToggle' type='checkbox' onClick={togglePasswordVisibility}/>
         </div>
         <button onClick={verifySignup}>Sign up</button>
         <span>Already have an account?</span><Link to="/main_window">Log in</Link>
       </main>
     );
   }
+
