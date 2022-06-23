@@ -1,36 +1,44 @@
 import * as d3 from 'd3';
+// import { textwrap } from 'd3-textwrap';
 
 const d3tree = (props) => {
 
     console.log("DRAWSTRUCTURE INVOKED!!");
-    const testData = props;
   
     const dms = {
-      width: 600,
+      width: 900,
       height: 400,
       margins: {
         top: 30,
-        bottom: 40,
-        left: 60,
-        right: 15
+        bottom: 30,
+        left: 50,
+        right: 30
       },
-      boundedWidth : 525, //this.width - this.margins.left - this.margins.right,
-      boundedHeight : 330 //this.height - this.margins.top - this.margins.bottom
+      // boundedWidth : 500, //this.width - this.margins.left - this.margins.right,
+      // boundedHeight : 300 //this.height - this.margins.top - this.margins.bottom
     };
+
+    if(document.querySelector('#d3treeWrapper').hasChildNodes())  document.querySelector('#d3treeWrapper').removeChild( document.querySelector('#d3tree'));
+   
+
     const svg = d3
       .select("#d3treeWrapper")
       .append("svg")
+      .attr("width", dms.width)
       .attr("height", dms.height)
-      .attr("width", dms.width);
+      .attr('fill','33CCCC')
+      .attr('id','d3tree')
   
     const bound = svg
       .append("g")
       .style(
         "transform",
         `translate(${dms.margins.left}px,${dms.margins.top}px)`
-      );
+      )
+      .attr("width","840")
+      .attr("height","300");
   
-    const tree = d3.tree().size([750, 300]);
+    const tree = d3.tree().size([700, 300]);
 
     // const parsedInformation = d3.hierarchy(testData);
     
@@ -45,10 +53,10 @@ const d3tree = (props) => {
       .enter()
       .append("rect")
       .attr("y", (d) => d.y)
-      .attr("x", (d) => d.x - 35)
-      .attr("height", 70)
-      .attr("width", 70)
-      .attr("fill", "blue");
+      .attr("x", (d) => d.x - 20)
+      .attr("height", 40)
+      .attr("width", 40)
+      .attr("fill", "green");
   
     const links = bound.append("g").selectAll("link").data(information.links());
     links
@@ -62,7 +70,7 @@ const d3tree = (props) => {
           .y((d) => d.y)
       )
       .attr("fill", "none")
-      .attr("stroke", "blue");
+      .attr("stroke", "gold");
   
     const names = bound
       .append("g")
@@ -72,8 +80,9 @@ const d3tree = (props) => {
       .enter()
       .append("text")
       .text((d) => d.data.name)
-      .attr("x", (d) => d.x - 35)
-      .attr("y", (d) => d.y - 5);
+      .attr("x", (d) => d.x - 40)
+      .attr("y", (d) => d.y - 5)
+      .style('font','14px times');
     const details = bound
       .append("g")
       .selectAll("detail")
@@ -81,9 +90,11 @@ const d3tree = (props) => {
     details
       .enter()
       .append("text")
-      .text((d) => d.data.count)
-      .attr("x", (d) => d.x - 15)
-      .attr("y", (d) => d.y + 35);
+      .text((d) => d.data.image)
+      .attr("x", (d) => d.x - 35)
+      .attr("y", (d) => d.y + 55)
+      .attr('size', 10)
+      .style('font','10px times');
   }
 
   export default d3tree;

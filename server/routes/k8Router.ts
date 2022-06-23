@@ -1,5 +1,5 @@
 import * as express from "express";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { k8Controller }  from "../controllers/k8Controller";
 
 const router = express.Router();
@@ -10,6 +10,7 @@ interface D3Response {
 }
 
 router.get('/namespaces',k8Controller.localNamespaces, (req:Request,res:Response) => {
+  // console.log('First namespace reached: ', res.locals.namespaces[0]);
   // First 4 namespaces are always (in order): 
   // 1. 'default': self explanatory
   // 2. 'kube-node-lease': holds Lease objects (every time a Node status updates, Lease objects are generated - could be useful for monitoring)
@@ -21,7 +22,7 @@ router.get('/namespaces',k8Controller.localNamespaces, (req:Request,res:Response
 
 
 // Router to fetch the data from clusters
-router.post('/pods', k8Controller.localPods, (req:Request, res:Response) => {
+router.post('/namespaces', k8Controller.localPods, (req:Request, res:Response) => {
   const { namespace } = res.locals.pods[0];
   // Namespace level - (first-time initialization of top-level structure)
   const response = {

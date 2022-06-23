@@ -4,7 +4,13 @@
     justify-content: space-between;
     align-items: center;
 }
-
+// #app {
+//     background-image: url('https://madsystems.com/wp-content/uploads/2016/03/MAD_5132-1-1500x1004.jpg');
+//     background-repeat: repeat;
+// }
+h2 {
+    color: black;
+}
 .verticalFlex {
     display: flex;
     flex-direction: column;
@@ -25,6 +31,17 @@
     border: 1px solid black;
     border-radius: 3px;
     margin: 5px;
+}
+
+.gridTree {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(50px, 1fr));
+    background-color: rgb(196, 204, 246);
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 5px;
+    width: 1000px;
+    height: 400px;
 }
 
 button {
