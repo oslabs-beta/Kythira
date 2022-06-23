@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS user (
+    _id SERIAL PRIMARY KEY,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    pw VARCHAR NOT NULL,
+    email VARCHAR UNIQUE NOT NULL,
+);
+
+CREATE TABLE IF NOT EXISTS clusters (
+    _id SERIAL PRIMARY KEY,
+    clusterName VARCHAR NOT NULL,
+    clusterAddress VARCHAR NOT NULL,
+    userID bigint NOT NULL,
+    FOREIGN KEY (userID) REFERENCES user("_id")
+);
