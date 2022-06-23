@@ -11,7 +11,7 @@
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
     "dev": "nodemon server/server.ts",
-    "test": "cross-env NODE_ENV=test jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose --coverage"
   },
   "keywords": [],
   "author": {
@@ -73,8 +73,12 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "@electron-forge/plugin-webpack": "^6.0.0-beta.63",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.2.1",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
+    "@types/d3": "^7.4.0",
     "@types/express": "^4.17.13",
     "@types/jest": "^28.1.1",
     "@types/pg": "^8.6.5",
@@ -91,6 +95,11 @@
     "eslint-plugin-import": "^2.26.0",
     "fork-ts-checker-webpack-plugin": "^6.5.2",
     "jest": "^28.1.1",
+    "jest-cli": "^28.1.1",
+    "jest-css-modules-transform": "^4.4.2",
+    "jest-environment-jsdom": "^28.1.1",
+    "msw": "^0.42.1",
+    "node-fetch": "^3.2.6",
     "node-loader": "^2.0.0",
     "nodemon": "^2.0.16",
     "sass": "^1.52.3",
@@ -101,13 +110,15 @@
     "ts-loader": "^9.3.0",
     "ts-node": "^10.8.1",
     "typescript": "~4.5.4",
-    "webpack": "^5.73.0"
+    "webpack": "^5.73.0",
+    "whatwg-fetch": "^3.6.2"
   },
   "dependencies": {
     "@kubernetes/client-node": "^0.16.3",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
+    "d3": "^7.4.4",
     "electron-squirrel-startup": "^1.0.0",
     "express": "^4.18.1",
     "pg": "^8.7.3",
