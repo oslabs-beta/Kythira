@@ -25,20 +25,10 @@ export default function Navigator(props: NavigatorProps){
             .catch(err => console.log('getNamespaces ERROR: ', err))
     }
 
-    // const namespaceGroup = namespaces.map((elem) => {
-    //     // if(namespace.name !== || namespace.name !== || namespace.name !==)
-    //     return (
-    //         <div className='horizontalFlex'>
-    //             <div>Pod {elem.namespace}</div>
-    //             <button onClick={() => {props.updateNamespace(elem.namespace)}}>Visualize Me</button>
-    //         </div>
-    //     )
-    // })
-
-        const namespaceGroup = namespaces.map((elem) => {
+        const namespaceGroup = namespaces.map((elem, index) => {
         // if(namespace.name !== || namespace.name !== || namespace.name !==)
         return (
-            <div className='horizontalFlex'>
+            <div className='horizontalFlex' key={`${elem} ${index}`}>
                 <div>Namespace: {elem}</div>
                 <button onClick={() => {props.updateNamespace(elem)}}>Visualize Me</button>
             </div>

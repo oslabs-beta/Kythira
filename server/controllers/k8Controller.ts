@@ -16,42 +16,45 @@ interface Pod {
   containers: object[]
 }
 
-interface Service {
-  name: string,
-  ports: number[],
-  selector: string
-}
+// interface Service {
+//   name: string,
+//   ports: number[],
+//   selector: string
+// }
 
-interface Controller {
-  name: string,
-  kind: string,
-  isManaging: boolean
-}
+// interface Controller {
+//   name: string,
+//   kind: string,
+//   isManaging: boolean
+// }
 
-interface Deployment {
-  name: string,
-  replicas: number,
-  kind: string,
-  status: string,
-  namespace: string,
-  createdAt: Date,
-  labels: Map<string,string>,
-  references: Controller[]
-}
+// interface Deployment {
+//   name: string,
+//   replicas: number,
+//   kind: string,
+//   status: string,
+//   namespace: string,
+//   createdAt: Date,
+//   labels: Map<string,string>,
+//   references: Controller[]
+// }
 
 export const k8Controller = {
   localNamespaces : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     console.log('Fetching local namespaces');    
     try {
+      // console.log('Entered try block')
       const namespaceArr:string[] = [];
-      await coreV1Api.listNamespace().then((res:any) => {
-        res.body.items.forEach((item:any) => {
+      await coreV1Api.listNamespace().then((APIres: any) => {
+        // console.log('res.body.items index 0: ', APIres.body.items[0]);
+        APIres.body.items.forEach((item:any) => {
           namespaceArr.push(item.metadata.name);
         })
       });
       res.locals.namespaces = namespaceArr;
-      // console.log(res.locals.namespaces);
       return next();
+      
+      // console.log(res.locals.namespaces);
     }
     catch (err) {
       return next({
@@ -66,21 +69,21 @@ export const k8Controller = {
       const pods : Pod[] = [];
       // Asynchronously gets all pod data in defined namespace, stored in res.body.items as an array (each element is a single pod)
       const { namespace } = req.body;
-      await coreV1Api.listNamespacedPod(namespace).then((res:any) => {
-        for (let i = 0; i < res.body.items.length; i++) {
+      await coreV1Api.listNamespacedPod(namespace).then((APIres:any) => {
+        for (let i = 0; i < APIres.body.items.length; i++) {
           pods.push({ 
-            namespace: res.body.items[i].metadata.namespace, 
-            podName: res.body.items[i].metadata.name, 
-            createdAt: res.body.items[i].metadata.creationTimestamp, 
-            status: res.body.items[i].status.containerStatuses[0].state.running ? 'Running': res.body.items[i].status.containerStatuses[0].state.waiting.reason, 
-            nodeName: res.body.items[i].spec.nodeName, 
+            namespace: APIres.body.items[i].metadata.namespace, 
+            podName: APIres.body.items[i].metadata.name, 
+            createdAt: APIres.body.items[i].metadata.creationTimestamp, 
+            status: APIres.body.items[i].status.containerStatuses[0].state.running ? 'Running': APIres.body.items[i].status.containerStatuses[0].state.waiting.reason, 
+            nodeName: APIres.body.items[i].spec.nodeName, 
             containers: []
           });
           // Populating container array with list of containers
-          for (let j = 0; j < res.body.items[i].spec.containers.length; j++) {
+          for (let j = 0; j < APIres.body.items[i].spec.containers.length; j++) {
             pods[i].containers.push({
-              name: res.body.items[i].spec.containers[j].name,
-              image: res.body.items[i].spec.containers[j].image,
+              name: APIres.body.items[i].spec.containers[j].name,
+              image: APIres.body.items[i].spec.containers[j].image,
             });
           }
         }

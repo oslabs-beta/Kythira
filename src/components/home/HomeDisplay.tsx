@@ -3,54 +3,6 @@ import { Link } from 'react-router-dom';
 import Visualizer from './Visualizer';
 import Navigator from './Navigator';
 
-const testData = {
-  "name": "Namespace: default",
-  "children": [
-      {
-          "name": "Node: minikube",
-          "children": [
-              {
-                  "name": "Pod: 8r6j4",
-                  "children": [
-                      {
-                          "name": "echoserver",
-                          "image": "k8s.gcr.io/echoserver:1.4"
-                      }
-                  ]
-              },
-              {
-                  "name": "Pod: 9hmvb",
-                  "children": [
-                      {
-                          "name": "echoserver",
-                          "image": "k8s.gcr.io/echoserver:1.4"
-                      }
-                  ]
-              },
-              {
-                  "name": "Pod: mn7wc",
-                  "children": [
-                      {
-                          "name": "echoserver",
-                          "image": "k8s.gcr.io/echoserver:1.4"
-                      }
-                  ]
-              },
-              {
-                  "name": "Pod: n28r2",
-                  "children": [
-                      {
-                          "name": "echoserver",
-                          "image": "k8s.gcr.io/echoserver:1.4"
-                      }
-                  ]
-              }
-          ]
-      }
-  ]
-}
-
-
 export default function HomeDisplay() {
 
     // This is going to be the full JSON structure of the namespace we want to visualize
@@ -83,7 +35,8 @@ export default function HomeDisplay() {
 
     return (
       <main className='verticalFlex'>
-        <h2>Welcome to the homepage! We're glad you could made it 😊</h2>
+        <img src='https://i.kym-cdn.com/entries/icons/facebook/000/034/256/Welcome_to_downtown_coolsville_banner.jpg' width='400px' height='225px'/>
+        <h2>We're glad you could made it 😎</h2>
         <section className='horizontalFlex'>
           <Navigator updateNamespace={updateNamespace}/>
           <Visualizer namespace={namespace} />
