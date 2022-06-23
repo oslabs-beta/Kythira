@@ -4,39 +4,52 @@ import Visualizer from './Visualizer';
 import Navigator from './Navigator';
 
 const testData = {
-  "name": "Eve",
-  "count": 100,
+  "name": "Namespace: default",
   "children": [
-    {
-      "name": "Cain"
-    },
-    {
-      "name": "Seth",
-      "children": [
-        {
-          "name": "Enos"
-        },
-        {
-          "name": "Noam"
-        }
-      ]
-    },
-    {
-      "name": "Abel"
-    },
-    {
-      "name": "Awan",
-      "children": [
-        {
-          "name": "Enoch"
-        }
-      ]
-    },
-    {
-      "name": "Azura"
-    }
+      {
+          "name": "Node: minikube",
+          "children": [
+              {
+                  "name": "Pod: 8r6j4",
+                  "children": [
+                      {
+                          "name": "echoserver",
+                          "image": "k8s.gcr.io/echoserver:1.4"
+                      }
+                  ]
+              },
+              {
+                  "name": "Pod: 9hmvb",
+                  "children": [
+                      {
+                          "name": "echoserver",
+                          "image": "k8s.gcr.io/echoserver:1.4"
+                      }
+                  ]
+              },
+              {
+                  "name": "Pod: mn7wc",
+                  "children": [
+                      {
+                          "name": "echoserver",
+                          "image": "k8s.gcr.io/echoserver:1.4"
+                      }
+                  ]
+              },
+              {
+                  "name": "Pod: n28r2",
+                  "children": [
+                      {
+                          "name": "echoserver",
+                          "image": "k8s.gcr.io/echoserver:1.4"
+                      }
+                  ]
+              }
+          ]
+      }
   ]
-};
+}
+
 
 export default function HomeDisplay() {
 
