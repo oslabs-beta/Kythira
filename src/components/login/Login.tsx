@@ -108,10 +108,10 @@ const LoginDisplay = () => {
                 {/* <a href="https://github.com/login/oauth/authorize?client_id=e4a70dc5fa8c873142f8">Login with Github</a> */}
                 <button onClick={githubOnClick} >Login with GitHub</button>
             </div>
-            <div>
+            {/* <div>
                 <button onClick={sendToBackend}>SEND TO BACKEND</button>
                 <button onClick={counter}>SEND COUNTER TO THE BACKEND</button>
-            </div>
+            </div> */}
         </div>
     )
 }

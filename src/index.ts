@@ -32,7 +32,8 @@ const createWindow = (): void => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      preload: path.join(__dirname, "preload.ts"),
+      // This code below is not working, for now.
+      // preload: path.join(__dirname, "preload.ts"),
     }
   });
   // and load the index.html of the app.
