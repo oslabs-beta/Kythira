@@ -41,6 +41,7 @@ interface Deployment {
 
 export const k8Controller = {
   localNamespaces : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+    console.log('Fetching local namespaces');    
     try {
       const namespaceArr:string[] = [];
       await coreV1Api.listNamespace().then((res:any) => {
@@ -49,7 +50,7 @@ export const k8Controller = {
         })
       });
       res.locals.namespaces = namespaceArr;
-      console.log(res.locals.namespaces);
+      // console.log(res.locals.namespaces);
       return next();
     }
     catch (err) {

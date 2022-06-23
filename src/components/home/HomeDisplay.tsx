@@ -60,25 +60,25 @@ export default function HomeDisplay() {
     // fetch the structure of that namespace
     // then assign that structure as the current namespace in state
     const updateNamespace = (targetNamespace:string) => {
-      console.log('targetNamespace is ', targetNamespace)
-      setNamespace(testData)
-      // const reqBody = {
-      //   namespace: targetNamespace
-      // }
+    //   console.log('targetNamespace is ', targetNamespace)
+    //   setNamespace(testData)
+      const reqBody = {
+        namespace: targetNamespace
+      }
 
-      // fetch('http://localhost:8080/k8/namespaces', {
-      //       method: 'POST',
-      //       headers: {
-      //           'Content-Type': 'Application/JSON'
-      //       },
-      //       body: JSON.stringify(reqBody)
-      //   })
-      //       .then(response => response.json())
-      //       .then(data => {
-      //           console.log('Namespace from backend', data);
-      //           setNamespace(data);
-      //       })
-      //       .catch(err => console.log('updateNamespace ERROR: ', err))
+      fetch('http://localhost:8080/k8/namespaces', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'Application/JSON'
+            },
+            body: JSON.stringify(reqBody)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Namespace from backend', data);
+                setNamespace(data);
+            })
+            .catch(err => console.log('updateNamespace ERROR: ', err))
     }
 
     return (

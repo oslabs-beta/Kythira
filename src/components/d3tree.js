@@ -6,7 +6,7 @@ const d3tree = (props) => {
     const testData = props;
   
     const dms = {
-      width: 420,
+      width: 500,
       height: 400,
       margins: {
         top: 30,
