@@ -1,42 +1,9 @@
 import * as d3 from 'd3';
-const data = {
-  "name": "Eve",
-  "count": 100,
-  "children": [
-    {
-      "name": "Cain"
-    },
-    {
-      "name": "Seth",
-      "children": [
-        {
-          "name": "Enos"
-        },
-        {
-          "name": "Noam"
-        }
-      ]
-    },
-    {
-      "name": "Abel"
-    },
-    {
-      "name": "Awan",
-      "children": [
-        {
-          "name": "Enoch"
-        }
-      ]
-    },
-    {
-      "name": "Azura"
-    }
-  ]
-};
 
-const d3tree = () => {
+const d3tree = (props) => {
+
     console.log("DRAWSTRUCTURE INVOKED!!");
-    const testData = data;
+    const testData = props;
   
     const dms = {
       width: 600,
@@ -51,7 +18,7 @@ const d3tree = () => {
       boundedHeight : 330 //this.height - this.margins.top - this.margins.bottom
     };
     const svg = d3
-      .select("#wrapper")
+      .select("#d3treeWrapper")
       .append("svg")
       .attr("height", dms.height)
       .attr("width", dms.width);
@@ -64,8 +31,12 @@ const d3tree = () => {
       );
   
     const tree = d3.tree().size([750, 300]);
-    let information = d3.hierarchy(testData);
-    information = tree(information);
+
+    // const parsedInformation = d3.hierarchy(testData);
+    
+    // const information = tree(parsedInformation);
+    const information = tree(d3.hierarchy(props))
+    
     const rects = bound
       .append("g")
       .selectAll("rect")
@@ -116,3 +87,38 @@ const d3tree = () => {
   }
 
   export default d3tree;
+
+  // const data = {
+  //   "name": "Eve",
+  //   "count": 100,
+  //   "children": [
+  //     {
+  //       "name": "Cain"
+  //     },
+  //     {
+  //       "name": "Seth",
+  //       "children": [
+  //         {
+  //           "name": "Enos"
+  //         },
+  //         {
+  //           "name": "Noam"
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       "name": "Abel"
+  //     },
+  //     {
+  //       "name": "Awan",
+  //       "children": [
+  //         {
+  //           "name": "Enoch"
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       "name": "Azura"
+  //     }
+  //   ]
+  // };

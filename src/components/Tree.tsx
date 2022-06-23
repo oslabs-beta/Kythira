@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import d3tree from './d3tree';
 
+// interface
+
 export default function Tree () {
   useEffect(()=>{
     d3tree();

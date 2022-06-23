@@ -10,7 +10,7 @@
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx .",
-    "dev": "nodemon server/server.js",
+    "dev": "nodemon server/server.ts",
     "test": "cross-env NODE_ENV=test jest --verbose --coverage"
   },
   "keywords": [],
