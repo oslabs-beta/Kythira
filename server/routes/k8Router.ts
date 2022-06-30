@@ -73,9 +73,9 @@ router.post('/namespaces', k8Controller.localPods, (req:Request, res:Response) =
   return res.status(200).json(res.locals.clusters);
 });
 
-router.get('/deployments', k8Controller.localDeployments, (req:Request, res:Response) => {
-  return res.status(200).json(res.locals.deployments);
-});
+// router.get('/deployments', k8Controller.localDeployments, (req:Request, res:Response) => {
+//   return res.status(200).json(res.locals.deployments);
+// });
 
 // router.get('/services', k8Controller.localServices, (req:Request, res:Response) => {
 //   return res.status(200).json(res.locals.services);
@@ -85,8 +85,8 @@ router.post('/newDeployment', k8Controller.newLocalDeployment, (req:Request, res
   return res.status(200).json(res.locals.deploymentCreated);
 });
 
-router.delete('/deployments', k8Controller.deleteLocalDeployment, (req:Request, res: Response)=>{
-  return res.status(200).json(res.locals.deploymentDeleted);
-})
+// router.delete('/deployments', k8Controller.deleteLocalDeployment, (req:Request, res: Response)=>{
+//   return res.status(200).json(res.locals.deploymentDeleted);
+// })
 
 export default router;
