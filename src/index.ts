@@ -54,7 +54,7 @@ const createWindow = (): void => {
         click() {
           app.quit()
         }
-      }, 
+      },
       {
         label: 'Open dev tools',
         click() {
