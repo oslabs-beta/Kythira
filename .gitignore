@@ -94,3 +94,6 @@ package-lock.json
 #dist
 dist/
 .dist/
+
+# experiment folder with k8 api responses
+experiment/

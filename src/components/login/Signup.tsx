@@ -30,7 +30,7 @@ export default function Signup() {
             navigate('/home');
         })
         .catch(err => console.log('verifyLogin ERROR: ', err))
-}
+  }
   const togglePasswordVisibility = () => {
     const passwordInput = document.querySelector('#passwordInput')
     const type = document.querySelector('#passwordInput').getAttribute('type');
@@ -41,24 +41,31 @@ export default function Signup() {
         // currently, and vice versa
         type === 'password' ? 'text' : 'password'
     );
-}
+  }
     return (
       <main className='verticalFlex'>
-        <h2>Create an account</h2>
+        <h2>Create a New Account</h2>
         <div>
-          <input type='text' placeholder='email' value={email} onChange={e => setEmail(e.target.value)}/>
+          <input id='loginInput' type='text' placeholder='email' value={email} onChange={e => setEmail(e.target.value)}/>
         </div>
         <div>
-          <input type='text' placeholder='username' value={username} onChange={e => setUsername(e.target.value)}/>
+          <input id='loginInput' type='text' placeholder='username' value={username} onChange={e => setUsername(e.target.value)}/>
         </div>
         <div>
-          <input id='passwordInput' type='password' placeholder='password' value={password}  onChange={e => setPassword(e.target.value)}/>
+          <input id='loginInput' type='password' placeholder='password' value={password}  onChange={e => setPassword(e.target.value)}/>
         </div>
-        <div>
-          <span>Show password</span><input data-testid='passwordToggle' type='checkbox' onClick={togglePasswordVisibility}/>
+        <div id='passwordConfig'>
+                <span>
+                <input data-testid='passwordToggle' id='pwToggle' type='checkbox' onClick={togglePasswordVisibility}/>
+                 Show password
+                </span>                
+                <Link to="/forgotPassword">Forgot password?</Link>
+            </div>
+        <button id='loginBtn' onClick={verifySignup}>Sign up</button>
+        <div id='signupConfig'>
+          <span>Already have an account?</span>
+          <Link to="/main_window">Log in</Link>
         </div>
-        <button onClick={verifySignup}>Sign up</button>
-        <span>Already have an account?</span><Link to="/main_window">Log in</Link>
       </main>
     );
   }

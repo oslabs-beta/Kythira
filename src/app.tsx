@@ -10,9 +10,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const App = () => {
   return (
     <BrowserRouter>
-      <main id='mainContainer'>
-        <h1>🔭 Kythira 🔭</h1>
-      </main>
+      {/* <main id='mainContainer'>
+        <h1>K Y T H I R A</h1>
+      </main> */}
       <Routes>
         <Route path='/main_window' element={<LoginDisplay />} />
         <Route path='signup' element={<Signup />} />

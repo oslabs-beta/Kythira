@@ -35,6 +35,12 @@ console.log("Current Table is created!");
 export const userController = {
     loginCheck : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> =>{
         try{
+            //Same middleware to be used for github authentication
+            if(res.locals.githubUser){
+                res.locals.verification = true;
+                console.log("NOW WE ARE IN GITHUB LOGIN CHECK");
+                return next();
+            }
             console.log('Login Check in process');
             console.log('ENVIRONMENT IS ====>', process.env.NODE_ENV);
             const username : string = req.body.username;
@@ -79,21 +85,3 @@ export const userController = {
         }
     }
 }
-
-// newAccount : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> =>{
-//     try{
-//         console.log("Account creation in progress");
-//         const {username, email, password} : {username:string, email:string, password:string} = req.body
-//         const hashedPassword : string = await bcrypt.hash(password, 10);
-//         const createUser : string = `INSERT INTO "user" (username, pw, email) VALUES ($1, $2, $3)`;
-//         const newUserDetails : string[] = [username, hashedPassword, email];
-//         const tempData : any = await pool.query(createUser, newUserDetails);
-//         const newUser : any = await tempData;
-//         res.locals.newUser = newUser;
-//         return next();
-//     }catch(err){
-//         return next({
-//             log: `Error in userController.newAccount: ${err}`,
-//             message: { err: 'An error in userController.newAccount'}
-//         })
-//     }
