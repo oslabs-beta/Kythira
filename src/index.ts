@@ -19,8 +19,15 @@ let mainWindow:Electron.BrowserWindow;
 
 const createWindow = (): void => {
     session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+
+      if(details.responseHeaders["X-Frame-Options"]){
+        delete details.responseHeaders["X-Frame-Options"];
+      }
+
       callback({ responseHeaders: Object.assign({
-          "Content-Security-Policy": [ "default-src 'self'" ]
+          // "Content-Security-Policy": [ "default-src * 'unsafe-inline' 'unsafe-eval'" ]
+          "Content-Security-Policy": [ "default-src * 'unsafe-eval' 'unsafe-inline'; style-src https: 'self' 'unsafe-inline'; frame-src *; img-src file: data: http: https:;" ]
+          
       }, details.responseHeaders)});
   });
   
@@ -53,6 +60,18 @@ const createWindow = (): void => {
         label: 'Exit app',
         click() {
           app.quit()
+        }
+      },
+      {
+        label: 'Open dev tools',
+        click() {
+          mainWindow.webContents.openDevTools();
+        }
+      },
+      {
+        label: 'Close dev tools',
+        click() {
+          mainWindow.webContents.closeDevTools();
         }
       }
       ]
