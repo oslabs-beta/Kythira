@@ -6,7 +6,7 @@ If you do not have a Kubernetes cluster up and running, use Minikube to quickly 
 # Mac
 1. Make sure you have Docker installed on your local machine. https://www.docker.com/products/docker-desktop/
 
-2. Once Docker is installed, run the following command:
+2. Once Docker is installed and running, run the following command:
   * `brew install minikube`
   * Note: it may take a while to fully install. Please be patient.
 

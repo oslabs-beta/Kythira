@@ -39,7 +39,7 @@ const createWindow = (): void => {
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
   // shell.openExternal("https://github.com/login/oauth/authorize?scope=user&client_id=e4a70dc5fa8c873142f8");
 
   // To have a smoother opening, it will wait until the page fully loaded then will shot the main window to the user.
@@ -53,6 +53,18 @@ const createWindow = (): void => {
         label: 'Exit app',
         click() {
           app.quit()
+        }
+      }, 
+      {
+        label: 'Open dev tools',
+        click() {
+          mainWindow.webContents.openDevTools();
+        }
+      },
+      {
+        label: 'Close dev tools',
+        click() {
+          mainWindow.webContents.closeDevTools();
         }
       }
       ]

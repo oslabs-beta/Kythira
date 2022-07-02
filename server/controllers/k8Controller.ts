@@ -191,7 +191,6 @@ export const k8Controller = {
       };
 
       // API call
-
       await appV1Api.createNamespacedDeployment('default', newDeployment).then((res:any) => {
         console.log(`Deployment ${newDeployment.metadata.name} successfully created`);
       });      

@@ -39,7 +39,8 @@ router.post('/signup', userController.newAccount, (request:Request, response:Res
 // Then send a post request to github to get the token
 // NOTE : Will we save this token in the db or once github grants permision, we will just allow the user get in the app?
 router.get('/github/oauth', oAuthController.getToken, oAuthController.getUserId,cookieController.setCookie, (request:Request, response:Response) => {
-    return response.status(200).send('ACCESS IS GRANTED, YOU CAN CLOSE THIS WINDOW');
+  response.locals.verification = true;  
+  return response.status(200).send('ACCESS IS GRANTED, YOU CAN CLOSE THIS WINDOW');
 } )
 
 
