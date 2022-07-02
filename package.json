@@ -21,7 +21,14 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "protocols": [
+          {
+            "name": "Koob App",
+            "schemes": ["koob-app"]
+          }
+        ]
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -37,7 +44,9 @@
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "mimeType": ["x-schema-handler/koob-app"]
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",

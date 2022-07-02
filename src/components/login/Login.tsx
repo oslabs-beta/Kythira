@@ -51,39 +51,14 @@ const LoginDisplay = () => {
             type === 'password' ? 'text' : 'password'
         );
     }
-    // // Githuboauth is added by Nevruz
-    // const gitHubAuth = () => {
-    //     console.log("YOU HAVE CLICKED LOGIN WITH GITHUB");
-    //     fetch(`http://localhost:8080/user/github/signin`)
-    //     .then(response => response.json())
-    //     .then(response => {
-    //         console.log("GITHUB AUTH IS IN PROGRESS!!! ===>");
-    //     })
-    // }
 
-    //IPC ADDITIONAL PART
-
-    const githubOnClick = () => {
-        console.log('Github OAuth clicked');
-        ipcRenderer.send('to-index',null);
+    const githubOnClick = async() => {
+        ipcRenderer.invoke("goGithub");
     }
-
-    let customMessage = 'HELLO FROM RENDERER PROCESS';
-    const sendToBackend =() => {
-        console.log('Send to backend function is triggered!');
-        ipcRenderer.send("message",customMessage);
-    }
-    let number = 0
-    const counter = () => {
-        number ++;
-        console.log('NOW NUMBER', number);
-        // First IPC is going only one direction
-        ipcRenderer.send("number", number);
-        // Adding another ipc.on will make it uni directional.
-        ipcRenderer.on("reply", (event,data) => {
-            console.log(data);
-        })
-    }
+    
+    ipcRenderer.on('newUrl', (event, data) => {
+        navigate('/home');
+    });
 
     return (
         <div className='verticalFlex' id='loginContainer'> 
@@ -112,15 +87,10 @@ const LoginDisplay = () => {
                 <span>Don't have an account?</span>
                 <Link to="/signup">Sign up</Link>
             </div>
-            {/* THIS PART IS ADDED BY NEVRUZ */}
             <div>
                 {/* <a href="https://github.com/login/oauth/authorize?client_id=e4a70dc5fa8c873142f8">Login with Github</a> */}
                 <button id='githubBtn' onClick={githubOnClick}><img id='githubLogo' src={githubLogo}/>  Login with GitHub</button>
             </div>
-            {/* <div>
-                <button onClick={sendToBackend}>SEND TO BACKEND</button>
-                <button onClick={counter}>SEND COUNTER TO THE BACKEND</button>
-            </div> */}
         </div>
     )
 }
