@@ -7,6 +7,32 @@ const appV1Api = kc.makeApiClient(k8s.AppsV1Api);
 // Allows us to query kubernetes for core objects like pods and services
 const coreV1Api = kc.makeApiClient(k8s.CoreV1Api);
 
+import {Pool} from 'pg';
+import { selector } from 'd3';
+console.log("Environment Variable", process.env.NODE_ENV)
+let PG_URI = '';
+
+if(process.env.NODE_ENV === "test"){
+  PG_URI = 'postgres://vwfofczb:Jy7dhkeZsVCm5HhzcWJaF1DkCGRBALB4@queenie.db.elephantsql.com/vwfofczb';
+  console.log("NOW WE ARE IN THE TEST ENVIRONMENT");
+}else PG_URI =  'postgres://borrqxeq:rFiEZWIXW_B92wRXM9ADuQ4qIvB4bzER@fanny.db.elephantsql.com/borrqxeq';
+
+export const pool = new Pool({
+  connectionString: PG_URI,
+  // waitForConnections: true,
+  // connectionLimit: 10,
+  // queueLimit : 0
+});
+
+const deploymentTable = `CREATE TABLE IF NOT EXISTS "deployment"(
+  _id SERIAL PRIMARY KEY,
+  username VARCHAR(20) UNIQUE NOT NULL,
+  pw VARCHAR NOT NULL,
+  email VARCHAR UNIQUE NOT NULL
+  );`;
+pool.query(deploymentTable);
+console.log("Deployment Table is created!");
+
 interface Pod {
   namespace: string,
   podName: string,
@@ -22,22 +48,22 @@ interface Pod {
 //   selector: string
 // }
 
-// interface Controller {
-//   name: string,
-//   kind: string,
-//   isManaging: boolean
-// }
+interface Controller {
+  name: string,
+  kind: string,
+  isManaging: boolean
+}
 
-// interface Deployment {
-//   name: string,
-//   replicas: number,
-//   kind: string,
-//   status: string,
-//   namespace: string,
-//   createdAt: Date,
-//   labels: Map<string,string>,
-//   references: Controller[]
-// }
+interface Deployment {
+  name: string,
+  replicas: number,
+  kind: string,
+  status: string,
+  namespace: string,
+  createdAt: Date,
+  labels: Map<string,string>,
+  references: Controller[]
+}
 
 export const k8Controller = {
   localNamespaces : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
@@ -124,40 +150,64 @@ export const k8Controller = {
   //     });
   //   }
   // },
+///dasfjsaiodfjioasfdj
+  localDeployments : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+    try {
+      const deployments: any[] = [];
+      const { namespace } = req.body;
+      await appV1Api.listNamespacedDeployment(namespace).then((APIres:any) => {
+        for (let i = 0; i < APIres.body.items.length; i++) {
+          deployments.push({
+            name: APIres.body.items[i].metadata.name,
+            label: APIres.body.items[i].metadata.labels,
+            selector: APIres.body.items[i].spec.selector,
+            cluster: APIres.body.items[i].metadata.namespace,
+            replicas: APIres.body.items[i].spec.replicas,
+            podLabel: APIres.body.items[i].spec.template.metadata.labels,
+            podContainers: [],
+            // podContainerName:  APIres.body.items[i].spec.template.spec.containers[0].name,
+            statusMsg: APIres.body.items[i].status.conditions[0].message,
+            createdAt: APIres.body.items[i].metadata.creationTimestamp,
+          });
+          for (let j = 0; j < APIres.body.items[i].spec.template.spec.containers.length; j++){
+            deployments[i].podContainers.push({
+              name:  APIres.body.items[i].spec.template.spec.containers[j].name,
+              image:  APIres.body.items[i].spec.template.spec.containers[j].image
+            })
+          }
+          // deployments.push(APIres.body.items[i])
+        }
+      });
+      res.locals.deployments = deployments;
+      return next();
+    }
+    catch (err) {
+      return next({
+        log: `Error in k8Controller.localDeployments: ${err}`,
+        message: { err: 'An error in k8Controller.localDeployments occurred.'}
+      });
+    }
+  },
 
-  // localDeployments : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
-  //   try {
-  //     const deployments: Deployment[] = [];
-  //     await appV1Api.listNamespacedDeployment('default').then((res:any) => {
-  //       for (let i = 0; i < res.body.items.length; i++) {
-  //         deployments.push({
-  //           name: res.body.items[i].metadata.name,
-  //           replicas: res.body.items[i].spec.replicas,
-  //           kind: res.body.items[i].kind,
-  //           status: res.body.items[i].status.conditions[0].status,
-  //           namespace: res.body.items[i].metadata.namespace,
-  //           createdAt: res.body.items[i].metadata.creationTimestamp,
-  //           labels: new Map(),
-  //           references: []
-  //         });
-  //         for (const labelTag in res.body.items[i].metadata.labels) {
-  //           deployments[i].labels.set(labelTag,res.body.items[i].metadata.labels[labelTag]);
-  //         }
-  //         for (let j = 0; j < res.body.items[i].metadata.ownerReferences.length; i++) {
-  //           deployments[i].references.push(res.body.items[i].metadata.ownerReferences[j]);
-  //         }
-  //       }
-  //     });
-  //     res.locals.deployments = deployments;
-  //     return next();
-  //   }
-  //   catch (err) {
-  //     return next({
-  //       log: `Error in k8Controller.localDeployments: ${err}`,
-  //       message: { err: 'An error in k8Controller.localServices occurred.'}
-  //     });
-  //   }
-  // },
+  fullLocalDeployments : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+    try {
+      const deployments: any[] = [];
+      const { namespace } = req.body;
+      await appV1Api.listNamespacedDeployment(namespace).then((APIres:any) => {
+        for (let i = 0; i < APIres.body.items.length; i++) {
+          deployments.push(APIres.body.items[i])
+        }
+      });
+      res.locals.deployments = deployments;
+      return next();
+    }
+    catch (err) {
+      return next({
+        log: `Error in k8Controller.localDeployments: ${err}`,
+        message: { err: 'An error in k8Controller.localDeployments occurred.'}
+      });
+    }
+  },
 
   newLocalDeployment : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     try {
@@ -167,21 +217,21 @@ export const k8Controller = {
       // replicas: number
       // metadataLabels: obj/map
       // containers: array of container objects { name: string, image: string }
-      const { name, selectorLabels, replicas, metadataLabels, containers } = req.body;
+      const { name, label, selector, replicas, podLabel, containers, namespace } = req.body;
 
       // Constructing deployment object
       const newDeployment = {
         metadata: {
-          name: name
+          name: name,
+          labels: label,
+          namespace: namespace
         },
         spec: {
-          selector: {
-            matchLabels: selectorLabels
-          },
           replicas: replicas,
+          selector: selector,
           template: {
             metadata: {
-              labels: metadataLabels
+              labels: podLabel
             },
             spec: {
               containers: containers
@@ -192,8 +242,8 @@ export const k8Controller = {
 
       // API call
 
-      await appV1Api.createNamespacedDeployment('default', newDeployment).then((res:any) => {
-        console.log(`Deployment ${newDeployment.metadata.name} successfully created`);
+      await appV1Api.createNamespacedDeployment(namespace, newDeployment).then((APIres:any) => {
+        console.log(`Deployment successfully created`);
       });      
       res.locals.deploymentCreated = true;
       return next();
@@ -204,7 +254,21 @@ export const k8Controller = {
         message: { err: 'An error in k8Controller.newLocalDeployment occurred.'}
       });
     }
+  },
+
+  deleteLocalDeployment : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
+    try{
+      const { name, namespace } = req.body;
+      const deletedDeployment = await appV1Api.deleteNamespacedDeployment(name, namespace); //deleteCollectionNamespacedDeployment
+      res.locals.deploymentDeleted = true;
+      return next();
+    }catch(err) {
+      return next({
+        log: `Error in k8Controller.deleteLocalDeployment: ${err}`,
+        message: { err: 'An error in k8Controller.deleteLocalDeployment occurred.'}
+      });
   }
+}
 
 
 };

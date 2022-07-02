@@ -54,6 +54,18 @@ const createWindow = (): void => {
         click() {
           app.quit()
         }
+      },
+      {
+        label: 'Open dev tools',
+        click() {
+          mainWindow.webContents.openDevTools();
+        }
+      },
+      {
+        label: 'Close dev tools',
+        click() {
+          mainWindow.webContents.closeDevTools();
+        }
       }
       ]
     }

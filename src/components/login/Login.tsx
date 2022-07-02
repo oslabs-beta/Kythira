@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
-import { response } from 'msw';
-import { local } from 'd3';
-
+import githubLogo from '../../assets/github-logo-32px.png';
+import loginIcon from '../../assets/login-icon.png';
 const LoginDisplay = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -62,26 +61,35 @@ const LoginDisplay = () => {
     });
 
     return (
-        <div className='verticalFlex'>         
+        <div className='verticalFlex' id='loginContainer'> 
+          <div>
+            <img id='loginIcon' src={loginIcon}/>
+          </div>        
             <div>
-                <input type='text' placeholder='username' value={username} onChange={e => setUsername(e.target.value)}/>
+                <input id='loginInput' type='text' placeholder='Username' value={username} onChange={e => setUsername(e.target.value)}/>
             </div>
             <div>
-                <input id='passwordInput' type='password' placeholder='password' value={password} onChange={e => setPassword(e.target.value)}/>
+                <input id='loginInput' type='password' placeholder='Password' value={password} onChange={e => setPassword(e.target.value)}/>
             </div>
             {verified === false && <div style={{color: 'red'}}>Error: Incorrect username or password</div>
             }
-            <div>
-                <span>Show password</span><input data-testid='passwordToggle' type='checkbox' onClick={togglePasswordVisibility}/>
+            <div id='passwordConfig'>
+                <span>
+                <input data-testid='passwordToggle' id='pwToggle' type='checkbox' onClick={togglePasswordVisibility}/>
+                 Show password
+                </span>                
+                <Link to="/forgotPassword">Forgot password?</Link>
             </div>
             <div>
-                <Link to="/forgotPassword">Forgot password?</Link><button onClick={verifyLogin}>Login</button>
+                <button id='loginBtn' onClick={verifyLogin}>L O G I N</button>
+            </div>
+            <div id='signupConfig'>
+                <span>Don't have an account?</span>
+                <Link to="/signup">Sign up</Link>
             </div>
             <div>
-                <span>Don't have an account?</span><Link to="/signup">Sign up</Link>
-            </div>
-            <div>
-                <button onClick={githubOnClick} >Login with GitHub</button>
+                {/* <a href="https://github.com/login/oauth/authorize?client_id=e4a70dc5fa8c873142f8">Login with Github</a> */}
+                <button id='githubBtn' onClick={githubOnClick}><img id='githubLogo' src={githubLogo}/>  Login with GitHub</button>
             </div>
         </div>
     )
