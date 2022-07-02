@@ -69,7 +69,8 @@
                   "name": "main_window"
                 }
               ]
-            }
+            },
+            "port": 3001
           }
         ]
       ]
