@@ -36,8 +36,8 @@ export default function Navigator(props: NavigatorProps){
     })
     
     return (
-        <div>
-            <span>Active namespaces below</span><button onClick={getNamespaces}>Refresh namespaces</button>
+        <div id='namespaceWrapper'>
+            <span>Active namespaces</span><button onClick={getNamespaces}>Refresh namespaces</button>
             <div className='grid'>
             {namespaceGroup}
             </div>
