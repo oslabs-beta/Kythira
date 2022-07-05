@@ -9,12 +9,12 @@ const coreV1Api = kc.makeApiClient(k8s.CoreV1Api);
 
 import {Pool} from 'pg';
 import { selector } from 'd3';
-console.log("Environment Variable", process.env.NODE_ENV)
+console.log('Environment Variable', process.env.NODE_ENV);
 let PG_URI = '';
 
-if(process.env.NODE_ENV === "test"){
+//SHOULD MOVE THESE CONNECTION URIs to an ENV file
+if(process.env.NODE_ENV === 'test'){
   PG_URI = 'postgres://vwfofczb:Jy7dhkeZsVCm5HhzcWJaF1DkCGRBALB4@queenie.db.elephantsql.com/vwfofczb';
-  console.log("NOW WE ARE IN THE TEST ENVIRONMENT");
 }else PG_URI =  'postgres://borrqxeq:rFiEZWIXW_B92wRXM9ADuQ4qIvB4bzER@fanny.db.elephantsql.com/borrqxeq';
 
 export const pool = new Pool({
@@ -31,7 +31,7 @@ const deploymentTable = `CREATE TABLE IF NOT EXISTS "deployment"(
   email VARCHAR UNIQUE NOT NULL
   );`;
 pool.query(deploymentTable);
-console.log("Deployment Table is created!");
+console.log('Deployment Table is created!');
 
 interface Pod {
   namespace: string,
@@ -48,39 +48,35 @@ interface Pod {
 //   selector: string
 // }
 
-interface Controller {
-  name: string,
-  kind: string,
-  isManaging: boolean
-}
+// interface Controller {
+//   name: string,
+//   kind: string,
+//   isManaging: boolean
+// }
 
-interface Deployment {
-  name: string,
-  replicas: number,
-  kind: string,
-  status: string,
-  namespace: string,
-  createdAt: Date,
-  labels: Map<string,string>,
-  references: Controller[]
-}
+// interface Deployment {
+//   name: string,
+//   replicas: number,
+//   kind: string,
+//   status: string,
+//   namespace: string,
+//   createdAt: Date,
+//   labels: Map<string,string>,
+//   references: Controller[]
+// }
 
 export const k8Controller = {
-  localNamespaces : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
-    console.log('Fetching local namespaces');    
+  
+  localNamespaces : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {  
     try {
-      // console.log('Entered try block')
       const namespaceArr:string[] = [];
       await coreV1Api.listNamespace().then((APIres: any) => {
-        // console.log('res.body.items index 0: ', APIres.body.items[0]);
         APIres.body.items.forEach((item:any) => {
           namespaceArr.push(item.metadata.name);
-        })
+        });
       });
       res.locals.namespaces = namespaceArr;
       return next();
-      
-      // console.log(res.locals.namespaces);
     }
     catch (err) {
       return next({
@@ -101,7 +97,7 @@ export const k8Controller = {
             namespace: APIres.body.items[i].metadata.namespace, 
             podName: APIres.body.items[i].metadata.name, 
             createdAt: APIres.body.items[i].metadata.creationTimestamp, 
-            status: APIres.body.items[i].status.containerStatuses[0].state.running ? 'Running': APIres.body.items[i].status.containerStatuses[0].state.waiting.reason, 
+            status: APIres.body.items[i].status.containerStatuses[0].state.running ? 'Running' : APIres.body.items[i].status.containerStatuses[0].state.waiting.reason, 
             nodeName: APIres.body.items[i].spec.nodeName, 
             containers: []
           });
@@ -150,12 +146,13 @@ export const k8Controller = {
   //     });
   //   }
   // },
-///dasfjsaiodfjioasfdj
+  //Getting a list of deployments in our local machine
   localDeployments : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     try {
       const deployments: any[] = [];
       const { namespace } = req.body;
       await appV1Api.listNamespacedDeployment(namespace).then((APIres:any) => {
+        //Response body items will be an array of objects with details about the deployment
         for (let i = 0; i < APIres.body.items.length; i++) {
           deployments.push({
             name: APIres.body.items[i].metadata.name,
@@ -165,17 +162,16 @@ export const k8Controller = {
             replicas: APIres.body.items[i].spec.replicas,
             podLabel: APIres.body.items[i].spec.template.metadata.labels,
             podContainers: [],
-            // podContainerName:  APIres.body.items[i].spec.template.spec.containers[0].name,
             statusMsg: APIres.body.items[i].status.conditions[0].message,
             createdAt: APIres.body.items[i].metadata.creationTimestamp,
           });
+          //Containers array will have details about each container
           for (let j = 0; j < APIres.body.items[i].spec.template.spec.containers.length; j++){
             deployments[i].podContainers.push({
               name:  APIres.body.items[i].spec.template.spec.containers[j].name,
               image:  APIres.body.items[i].spec.template.spec.containers[j].image
-            })
+            });
           }
-          // deployments.push(APIres.body.items[i])
         }
       });
       res.locals.deployments = deployments;
@@ -188,14 +184,15 @@ export const k8Controller = {
       });
     }
   },
-
+  
+  //Testing purpose to see the full response from K8 API
   fullLocalDeployments : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     try {
       const deployments: any[] = [];
       const { namespace } = req.body;
       await appV1Api.listNamespacedDeployment(namespace).then((APIres:any) => {
         for (let i = 0; i < APIres.body.items.length; i++) {
-          deployments.push(APIres.body.items[i])
+          deployments.push(APIres.body.items[i]);
         }
       });
       res.locals.deployments = deployments;
@@ -208,15 +205,11 @@ export const k8Controller = {
       });
     }
   },
-
+  
+  //Create a new deployment
   newLocalDeployment : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     try {
-      // name: string
-      // ????? kind: string?
-      // selectorLabels: obj/map (key-value pair)
-      // replicas: number
-      // metadataLabels: obj/map
-      // containers: array of container objects { name: string, image: string }
+      // Destructuring relevant configuration options from request body
       const { name, label, selector, replicas, podLabel, containers, namespace } = req.body;
 
       // Constructing deployment object
@@ -240,11 +233,8 @@ export const k8Controller = {
         }
       };
 
-      // API call
-
-      await appV1Api.createNamespacedDeployment(namespace, newDeployment).then((APIres:any) => {
-        console.log(`Deployment successfully created`);
-      });      
+      // API call (should create new deployment - no response expected)
+      await appV1Api.createNamespacedDeployment(namespace, newDeployment);
       res.locals.deploymentCreated = true;
       return next();
     }
@@ -256,10 +246,11 @@ export const k8Controller = {
     }
   },
 
+  //Deleting deployments based on their names and cluster names
   deleteLocalDeployment : async (req: Request, res: Response, next: NextFunction) : Promise<unknown> => {
     try{
       const { name, namespace } = req.body;
-      const deletedDeployment = await appV1Api.deleteNamespacedDeployment(name, namespace); //deleteCollectionNamespacedDeployment
+      await appV1Api.deleteNamespacedDeployment(name, namespace); //deleteCollectionNamespacedDeployment
       res.locals.deploymentDeleted = true;
       return next();
     }catch(err) {
@@ -267,8 +258,8 @@ export const k8Controller = {
         log: `Error in k8Controller.deleteLocalDeployment: ${err}`,
         message: { err: 'An error in k8Controller.deleteLocalDeployment occurred.'}
       });
+    }
   }
-}
 
 
 };

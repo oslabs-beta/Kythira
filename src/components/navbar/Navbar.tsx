@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface NavbarProps {
   updatePage: (targetPage:string) => void
 }
-
+//Programmatically generates a list of buttons (defined in the pages array), which will update the component (or 'page') rendered on the HomeDisplay when clicked
 export default function Navbar (props:NavbarProps) {
   const { updatePage } = props;
-  const pages = ['Structure','Create Deployment','Manage Deployments','Metrics','Logs'];
+  const pages = ['Structure','Create Deployment','Manage Deployments','Prometheus','Grafana','Metrics','Logs'];
   const options = [];
   for (let i = 0; i < pages.length; i++) {
     options.push(<button className='navbarBtn' onClick={() => updatePage(pages[i])}>{pages[i]}</button>);
@@ -15,5 +15,5 @@ export default function Navbar (props:NavbarProps) {
     <div id='navBar'>
       {options}
     </div>
-  )
-};
+  );
+}

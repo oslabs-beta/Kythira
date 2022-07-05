@@ -13,41 +13,25 @@ If you do not have a Kubernetes cluster up and running, use Minikube to quickly 
 3. Confirm that minikube is successfully installed by running the following command: 
   * `which minikube`
 
-4. Start the minikube service with the following command:
+4. Make sure you have Helm installed on your local machine
+
+5. Add the Prometheus repo to your Helm repos using the command
+  * `helm repo add prometheus-community https://prometheus-community.github.io/helm-charts`
+
+6. Start the minikube service with the following command:
   * `minikube start`
 
-5. Make sure you have kubectl installed to add deployments (should we add this as a stretch feature if we're trying to abstract the command line away from the user?):
-  * `brew install kubectl` 
-7. To generate pods, run the following commands:
+7. To generate pods, run the following command:
   * `kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.4`
-  * `kubectl expose deployment hello-minikube --type=NodePort --port=9090`
 
-8. This will create a deployment that will genereate a pod with the provided image. Exposing the deployment simply means we are able to access the port. 
+8. Install the prometheus chart to your cluster with the following command:
+  * `helm install prometheus prometheus-community/kube-prometheus-stack`
 
+9. In a new terminal, run the following command to expose Prometheus:
+  * `kubectl port-forward pod/prometheus-prometheus-kube-prometheus-prometheus-0 9090`
 
-ONLY NEED TO DO THE BELOW ONCE
+10. In a new terminal, run the following command to expose Grafana:
+  * `kubectl port-forward deployment/prometheus-grafana 3000`
 
-globally install helm
-
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-
-DO THIS EVERY TIME
-
-minikube start
-
-helm install prometheus prometheus-community/kube-prometheus-stack
-
-(Both port forwarding commands will need independent terminals)
-
-kubectl port-forward pod/prometheus-prometheus-kube-prometheus-prometheus-0 9090
-
-kubectl port-forward deployment/prometheus-grafana 3000
-
-npm start
-
-Grafana login is:
-admin
-prom-operator
-
-Figure out how to have the grafana defaults.ini deployed to the helm chart
-or figure out how to have the iframe's cookies work
+11. Run the following command to start the application:
+  * `npm start`

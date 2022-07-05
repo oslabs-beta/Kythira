@@ -4,6 +4,8 @@ module.exports = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['./jest.setup.ts'],
   transform: {
-    ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform"
+    '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform'
   },
 };
+
+// Configuration 
