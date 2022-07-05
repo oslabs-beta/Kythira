@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 // import {createMemoryHistory} from 'history';
 
@@ -14,42 +14,42 @@ import ForgotPassword from '../../../../src/components/login/ForgotPassword';
 
 describe('Unit testing ForgotPassword component', () => {
 
-    beforeEach(() => {
-        render(
-        <BrowserRouter>
-            <ForgotPassword />
-        </BrowserRouter>
-        )
-    });
+  beforeEach(() => {
+    render(
+      <BrowserRouter>
+        <ForgotPassword />
+      </BrowserRouter>
+    );
+  });
 
-    it('Should render email input', () => {
-        expect(screen.getByPlaceholderText('email')).toBeInTheDocument()
-    })
+  it('Should render email input', () => {
+    expect(screen.getByPlaceholderText('email')).toBeInTheDocument();
+  });
 
-    // it('Should update the input field when the user types', async () => {
-    //     const user = userEvent.setup()
-    //     const EM = screen.getByPlaceholderText('email') as HTMLInputElement;
-    //     const UN = screen.getByPlaceholderText('username') as HTMLInputElement;
-    //     const PW = screen.getByPlaceholderText('password') as HTMLInputElement;
+  // it('Should update the input field when the user types', async () => {
+  //     const user = userEvent.setup()
+  //     const EM = screen.getByPlaceholderText('email') as HTMLInputElement;
+  //     const UN = screen.getByPlaceholderText('username') as HTMLInputElement;
+  //     const PW = screen.getByPlaceholderText('password') as HTMLInputElement;
 
-    //     expect(EM.value).toBe('')
-    //     expect(UN.value).toBe('')
-    //     expect(PW.value).toBe('')
+  //     expect(EM.value).toBe('')
+  //     expect(UN.value).toBe('')
+  //     expect(PW.value).toBe('')
 
-    //     await user.type(EM, 'emailTest')
-    //     await user.type(UN, 'usernameTest')
-    //     await user.type(PW, 'passwordTest')
+  //     await user.type(EM, 'emailTest')
+  //     await user.type(UN, 'usernameTest')
+  //     await user.type(PW, 'passwordTest')
 
-    //     expect(EM.value).toBe('emailTest')
-    //     expect(UN.value).toBe('usernameTest')
-    //     expect(PW.value).toBe('passwordTest')
-    // })
+  //     expect(EM.value).toBe('emailTest')
+  //     expect(UN.value).toBe('usernameTest')
+  //     expect(PW.value).toBe('passwordTest')
+  // })
 
-    it('Should have a link to the login page', () => {
-        expect(screen.getByText('Back to the log in page')).toBeInTheDocument()
-    })
+  it('Should have a link to the login page', () => {
+    expect(screen.getByText('Back to the log in page')).toBeInTheDocument();
+  });
 
-    it('Should have a button to send the reset link', () => {
-        expect(screen.getByText('Send reset password link')).toBeInTheDocument()
-    })
-})
+  it('Should have a button to send the reset link', () => {
+    expect(screen.getByText('Send reset password link')).toBeInTheDocument();
+  });
+});

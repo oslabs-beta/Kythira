@@ -6,7 +6,7 @@ interface DeploymentObj {
   numReplicas: number
 
 }
-
+// TODO: this component was designed to accept various inputs and create a new k8 deployment based on the inputs (as config options). The styling and fetch request/routing have yet to be completed 
 export default function NewDeployment() {
   const [metadataName, setMetadataName] = useState('');
   const [specSelectorLabels, setSpecSelectorLabels] = useState('');
@@ -28,7 +28,7 @@ export default function NewDeployment() {
       numReplicas: numReplicas,
       selectorLabels: specSelectorLabelMap
     };
-    fetch('/')
+    fetch('/');
     return;
   };
   return (
@@ -50,12 +50,12 @@ export default function NewDeployment() {
 
       <div className='newDeploymentInputField'>
         Template Selector Labels
-        <input id='' type='text' placeholder=''/>
+        <input id='' type='text' placeholder='e.g., key1:value1, key2:value2, etc.'/>
       </div>
 
       <input id='' placeholder=''/>
       <input id='' placeholder=''/>
       <button onClick={createDeployment}></button>
     </div>
-  )
+  );
 }
