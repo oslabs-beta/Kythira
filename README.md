@@ -1,4 +1,4 @@
-# Koob
+# Kythira
 
 # Quick Start
 If you do not have a Kubernetes cluster up and running, use Minikube to quickly set one up. The instructions are laid out below.
