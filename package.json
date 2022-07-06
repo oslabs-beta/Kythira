@@ -25,7 +25,9 @@
         "protocols": [
           {
             "name": "Koob App",
-            "schemes": ["koob-app"]
+            "schemes": [
+              "koob-app"
+            ]
           }
         ]
       },
@@ -33,7 +35,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "my_new_app"
+            "name": "kythira"
           }
         },
         {
@@ -45,12 +47,30 @@
         {
           "name": "@electron-forge/maker-deb",
           "config": {
-            "mimeType": ["x-schema-handler/koob-app"]
+            "options": {
+              "name": "kythira",
+              "productName": "Kythira",
+              "version": "1.0.0",
+              "description": "Kubernetes visualizer",
+              "mimeType": [
+                "x-schema-handler/koob-app"
+              ]
+            }
           }
         },
         {
           "name": "@electron-forge/maker-rpm",
-          "config": {}
+          "config": {
+            "options": {
+              "name": "kythira",
+              "productName": "Kythira",
+              "version": "1.0.0",
+              "description": "Kubernetes visualizer",
+              "mimeType": [
+                "x-schema-handler/koob-app"
+              ]
+            }
+          }
         }
       ],
       "plugins": [
@@ -97,7 +117,7 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
-    "@vercel/webpack-asset-relocator-loader": "^1.7.0",
+    "@vercel/webpack-asset-relocator-loader": "^1.7.2",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "electron": "19.0.4",
