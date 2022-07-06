@@ -9,7 +9,7 @@ export default function Navbar (props:NavbarProps) {
   const pages = ['Structure','Create Deployment','Manage Deployments','Prometheus','Grafana','Metrics','Logs'];
   const options = [];
   for (let i = 0; i < pages.length; i++) {
-    options.push(<button className='navbarBtn' onClick={() => updatePage(pages[i])}>{pages[i]}</button>);
+    options.push(<button className='navbarBtn' key={pages[i]} onClick={() => updatePage(pages[i])}>{pages[i]}</button>);
   }
   return (
     <div id='navBar'>
