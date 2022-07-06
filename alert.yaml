@@ -1,0 +1,92 @@
+Name:               alertmanager-prometheus-kube-prometheus-alertmanager
+Namespace:          default
+CreationTimestamp:  Wed, 06 Jul 2022 09:46:47 -0700
+Selector:           alertmanager=prometheus-kube-prometheus-alertmanager,app=alertmanager,app.kubernetes.io/instance=prometheus-kube-prometheus-alertmanager,app.kubernetes.io/managed-by=prometheus-operator,app.kubernetes.io/name=alertmanager
+Labels:             app=kube-prometheus-stack-alertmanager
+                    app.kubernetes.io/instance=prometheus
+                    app.kubernetes.io/managed-by=Helm
+                    app.kubernetes.io/part-of=kube-prometheus-stack
+                    app.kubernetes.io/version=19.2.2
+                    chart=kube-prometheus-stack-19.2.2
+                    heritage=Helm
+                    release=prometheus
+Annotations:        meta.helm.sh/release-name: prometheus
+                    meta.helm.sh/release-namespace: default
+                    prometheus-operator-input-hash: 2142772525823089055
+Replicas:           1 desired | 1 total
+Update Strategy:    RollingUpdate
+Pods Status:        1 Running / 0 Waiting / 0 Succeeded / 0 Failed
+Pod Template:
+  Labels:           alertmanager=prometheus-kube-prometheus-alertmanager
+                    app=alertmanager
+                    app.kubernetes.io/instance=prometheus-kube-prometheus-alertmanager
+                    app.kubernetes.io/managed-by=prometheus-operator
+                    app.kubernetes.io/name=alertmanager
+                    app.kubernetes.io/version=0.22.2
+  Annotations:      kubectl.kubernetes.io/default-container: alertmanager
+  Service Account:  prometheus-kube-prometheus-alertmanager
+  Containers:
+   alertmanager:
+    Image:       quay.io/prometheus/alertmanager:v0.22.2
+    Ports:       9093/TCP, 9094/TCP, 9094/UDP
+    Host Ports:  0/TCP, 0/TCP, 0/UDP
+    Args:
+      --config.file=/etc/alertmanager/config/alertmanager.yaml
+      --storage.path=/alertmanager
+      --data.retention=120h
+      --cluster.listen-address=
+      --web.listen-address=:9093
+      --web.external-url=http://prometheus-kube-prometheus-alertmanager.default:9093
+      --web.route-prefix=/
+      --cluster.peer=alertmanager-prometheus-kube-prometheus-alertmanager-0.alertmanager-operated:9094
+      --cluster.reconnect-timeout=5m
+    Requests:
+      memory:   200Mi
+    Liveness:   http-get http://:web/-/healthy delay=0s timeout=3s period=10s #success=1 #failure=10
+    Readiness:  http-get http://:web/-/ready delay=3s timeout=3s period=5s #success=1 #failure=10
+    Environment:
+      POD_IP:   (v1:status.podIP)
+    Mounts:
+      /alertmanager from alertmanager-prometheus-kube-prometheus-alertmanager-db (rw)
+      /etc/alertmanager/certs from tls-assets (ro)
+      /etc/alertmanager/config from config-volume (rw)
+   config-reloader:
+    Image:      quay.io/prometheus-operator/prometheus-config-reloader:v0.50.0
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Command:
+      /bin/prometheus-config-reloader
+    Args:
+      --listen-address=:8080
+      --reload-url=http://127.0.0.1:9093/-/reload
+      --watched-dir=/etc/alertmanager/config
+    Limits:
+      cpu:     100m
+      memory:  50Mi
+    Requests:
+      cpu:     100m
+      memory:  50Mi
+    Environment:
+      POD_NAME:   (v1:metadata.name)
+      SHARD:     -1
+    Mounts:
+      /etc/alertmanager/config from config-volume (ro)
+  Volumes:
+   config-volume:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  alertmanager-prometheus-kube-prometheus-alertmanager-generated
+    Optional:    false
+   tls-assets:
+    Type:        Secret (a volume populated by a Secret)
+    SecretName:  alertmanager-prometheus-kube-prometheus-alertmanager-tls-assets
+    Optional:    false
+   alertmanager-prometheus-kube-prometheus-alertmanager-db:
+    Type:       EmptyDir (a temporary directory that shares a pod's lifetime)
+    Medium:     
+    SizeLimit:  <unset>
+Volume Claims:  <none>
+Events:
+  Type    Reason            Age   From                    Message
+  ----    ------            ----  ----                    -------
+  Normal  SuccessfulCreate  25m   statefulset-controller  create Pod alertmanager-prometheus-kube-prometheus-alertmanager-0 in StatefulSet alertmanager-prometheus-kube-prometheus-alertmanager successful
+
