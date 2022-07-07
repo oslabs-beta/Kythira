@@ -103,6 +103,7 @@ a {
   text-align: center;
   align-items: center;
   height: 100%;
+  width: 200px;
 }
 
 #newDeployment {
@@ -178,6 +179,12 @@ h2 {
     border: 1px solid black;
     border-radius: 3px;
     margin: 5px;
+}
+
+.namespaceButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .gridTree {

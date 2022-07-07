@@ -26,7 +26,7 @@ export default function Navigator(props: NavigatorProps){
   // Generates JSX elements for all namespaces within state (fetched from k8 client API)
   const namespaceGroup = namespaces.map((elem, index) => {
     return (
-      <div>
+      <div className='namespaceButton' >
         {elem} 
         <button onClick={() => {props.updateNamespace(elem);}}>Visualize Me</button>
       </div>
