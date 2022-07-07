@@ -8,16 +8,16 @@ module.exports = {
   module: {
     rules: require('./webpack.rules'),
   },
-  externals: [
-    {
-      'utf-8-validate' : 'commonjs utf-8-validate',
-      'bufferutil': 'commonjs bufferutil',
-      'mock-aws-s3': 'commonjs mock-aws-s3',
-      'aws-sdk': 'commonjs aws-sdk',
-      'nock': 'commonjs nock',
-      'pg-native': 'commonjs pg-native',
-    }
-  ],
+  // externals: [
+  //   {
+  //     'utf-8-validate' : 'commonjs utf-8-validate',
+  //     'bufferutil': 'commonjs bufferutil',
+  //     'mock-aws-s3': 'commonjs mock-aws-s3',
+  //     'aws-sdk': 'commonjs aws-sdk',
+  //     'nock': 'commonjs nock',
+  //     'pg-native': 'commonjs pg-native',
+  //   }
+  // ],
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },

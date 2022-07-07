@@ -9,7 +9,7 @@ const d3tree = (props) => {
     margins: {
       top: 30,
       bottom: 30,
-      left: 50,
+      left: 80,
       right: 30
     },
   };
@@ -33,7 +33,7 @@ const d3tree = (props) => {
       'transform',
       `translate(${dms.margins.left}px,${dms.margins.top}px)`
     )
-    .attr('width','840')
+    .attr('width','800')
     .attr('height','300');
   
   //Initialize tree chart type
@@ -95,7 +95,6 @@ const d3tree = (props) => {
     .text((d) => d.data.image)
     .attr('x', (d) => d.x - 35)
     .attr('y', (d) => d.y + 55)
-    .attr('size', 10)
     .style('font','10px times');
 };
 
