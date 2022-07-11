@@ -1,20 +1,19 @@
-import express, {Request, Response, NextFunction } from 'express';
-import cors from "cors";
-import * as path from "path";
+import express, {Request, Response } from 'express';
+import cors from 'cors';
 let app: express.Application | undefined = undefined;
 const PORT = 8080;
 
 app = express();
 
 //Routers to be imported
-import userRouter from "./routes/userRouter";
-import k8Router from "./routes/k8Router";
+import userRouter from './routes/userRouter';
+import k8Router from './routes/k8Router';
 
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors({
-    origin: "http://localhost:3000",
+  origin: '*',
 }));
 
 app.use('/user', userRouter);
@@ -24,7 +23,7 @@ app.use('/k8', k8Router);
 
 //Catch all error handler
 app.use((req,res)=>{
-    return res.status(404).send('You in the wrong place')
+  return res.status(404).send('You in the wrong place');
 });
 
 //Global Error handler
@@ -37,16 +36,16 @@ app.use((err: Error, req: Request, res: Response) => {
     }
 
     const defaultErr:globalError = {
-        log: 'Express error handler caught unkown middleware error',
-        status: 500,
-        message: {err: 'An error occured'},
+      log: 'Express error handler caught unkown middleware error',
+      status: 500,
+      message: {err: 'An error occured'},
     };
     const errorObj = Object.assign({}, defaultErr, err);
     return res.status(errorObj.status).json(errorObj.message);
-})
+});
 
 app.listen(PORT, () => {
-    console.log(`Listening on port: ${PORT} `);
+  console.log(`Listening on port: ${PORT} `);
 });
 
 export default app;

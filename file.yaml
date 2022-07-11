@@ -1,0 +1,197 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    meta.helm.sh/release-name: prometheus
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2021-10-20T22:29:26Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: prometheus
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/version: 8.2.1
+    helm.sh/chart: grafana-6.17.2
+  name: prometheus-grafana
+  namespace: default
+  resourceVersion: "362473"
+  uid: 83061d3f-d3b8-4d77-ac0b-cb5e0090c40c
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: prometheus
+      app.kubernetes.io/name: grafana
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/config: 2d804b3331b364dea4f819584648fb6316da81f7238d51f843896a943449380a
+        checksum/dashboards-json-config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+        checksum/sc-dashboard-provider-config: 70927a62f8753b5f6e5e79def2ec97b005da541acd319124209a88d8e24e40cb
+        checksum/secret: 1bd09f0f39a7b6da53f204c68b52ca77fcc2ad15e970a18c5c62fac0a48505fa
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: prometheus
+        app.kubernetes.io/name: grafana
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - env:
+        - name: METHOD
+        - name: LABEL
+          value: grafana_dashboard
+        - name: FOLDER
+          value: /tmp/dashboards
+        - name: RESOURCE
+          value: both
+        image: quay.io/kiwigrid/k8s-sidecar:1.14.2
+        imagePullPolicy: IfNotPresent
+        name: grafana-sc-dashboard
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /tmp/dashboards
+          name: sc-dashboard-volume
+      - env:
+        - name: GF_SECURITY_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              key: admin-user
+              name: prometheus-grafana
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: admin-password
+              name: prometheus-grafana
+        - name: GF_SECURITY_ALLOW_EMBEDDING
+          value: "true"
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: "true"
+        - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+          value: "Admin"
+        - name: GF_PATHS_DATA
+          value: /var/lib/grafana/
+        - name: GF_PATHS_LOGS
+          value: /var/log/grafana
+        - name: GF_PATHS_PLUGINS
+          value: /var/lib/grafana/plugins
+        - name: GF_PATHS_PROVISIONING
+          value: /etc/grafana/provisioning
+        image: grafana/grafana:8.2.1
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /api/health
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 30
+        name: grafana
+        ports:
+        - containerPort: 80
+          name: service
+          protocol: TCP
+        - containerPort: 3000
+          name: grafana
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /api/health
+            port: 3000
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/grafana/grafana.ini
+          name: config
+          subPath: grafana.ini
+        - mountPath: /var/lib/grafana
+          name: storage
+        - mountPath: /tmp/dashboards
+          name: sc-dashboard-volume
+        - mountPath: /etc/grafana/provisioning/dashboards/sc-dashboardproviders.yaml
+          name: sc-dashboard-provider
+          subPath: provider.yaml
+        - mountPath: /etc/grafana/provisioning/datasources
+          name: sc-datasources-volume
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      initContainers:
+      - env:
+        - name: METHOD
+          value: LIST
+        - name: LABEL
+          value: grafana_datasource
+        - name: FOLDER
+          value: /etc/grafana/provisioning/datasources
+        - name: RESOURCE
+          value: both
+        image: quay.io/kiwigrid/k8s-sidecar:1.14.2
+        imagePullPolicy: IfNotPresent
+        name: grafana-sc-datasources
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/grafana/provisioning/datasources
+          name: sc-datasources-volume
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 472
+        runAsGroup: 472
+        runAsUser: 472
+      serviceAccount: prometheus-grafana
+      serviceAccountName: prometheus-grafana
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: prometheus-grafana
+        name: config
+      - emptyDir: {}
+        name: storage
+      - emptyDir: {}
+        name: sc-dashboard-volume
+      - configMap:
+          defaultMode: 420
+          name: prometheus-grafana-config-dashboards
+        name: sc-dashboard-provider
+      - emptyDir: {}
+        name: sc-datasources-volume
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2021-10-20T22:29:36Z"
+    lastUpdateTime: "2021-10-20T22:29:36Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2021-10-20T22:29:26Z"
+    lastUpdateTime: "2021-10-20T22:29:36Z"
+    message: ReplicaSet "prometheus-grafana-5b96fb5467" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

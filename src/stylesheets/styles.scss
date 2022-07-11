@@ -1,25 +1,173 @@
-#mainContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+@keyframes mainAnim {
+  0% {background-color:rgba(9, 180, 255, 0.5)}
+  25% {background-color:rgba(20, 120, 255, 0.5)}
+  50% {background-color:rgba(9, 60, 255, 0.5)}
+  75% {background-color:rgba(20, 120, 255, 0.5)}
+  100% {background-color:rgba(9, 180, 255, 0.5)}
 }
-// #app {
-//     background-image: url('https://madsystems.com/wp-content/uploads/2016/03/MAD_5132-1-1500x1004.jpg');
-//     background-repeat: repeat;
-// }
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgb(228, 254, 255);
+  opacity: 1; /* Firefox */
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: white;
+}
 h2 {
-    color: black;
-}
-.verticalFlex {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+  color: white;
 }
 
+#navBar {
+  position: relative;
+  left: 0;
+  height: 100%;
+  min-width: 150px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  min-height: 350px;
+  background-color:rgb(53, 151, 255);
+}
+
+.navbarBtn {
+  min-width: 150px;
+  height: 70px;
+  background-color: transparent;
+  border: none;
+  border-radius: 0px;
+  border: 1px solid transparent;
+  box-shadow: 0 0 0 0;
+  padding: 5px 8px 5px 8px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+#githubLogo {
+  height: 18px;
+  width: 18px;
+  margin-right: 10px;
+}
+#loginIcon {
+  height: 150px;
+  width: 150px;
+}
+#loginInput {
+  background-color:rgb(55, 158, 249);
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  color: white;
+  border: 1px solid transparent;
+  min-width: 350px;
+  padding: 12px 6px 12px 24px;
+  margin-bottom: 12px;
+}
+#passwordConfig {
+  display: inline-flex;
+  color: white;
+  min-width: 375px;
+  justify-content: space-around;
+}
+#signupConfig {
+  color: white;
+  display: flex;
+  min-width: 250px;
+  justify-content: space-around;
+}
+a {
+  text-decoration-line: none;
+  color: rgb(164, 253, 255);
+}
+#loginBtn {
+  margin: 12px;
+  min-height: 50px;
+  min-width: 125px;
+}
+
+#githubBtn {
+  margin: 12px;
+  min-height: 50px;
+  min-width: 175px;
+}
+#namespacesWrapper {
+  display: inline-flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+#namespaceWrapper {
+  display: inline-flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  height: 100%;
+  width: 200px;
+}
+
+#newDeployment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(196, 204, 246);
+  border: 1px solid black;
+  border-radius: 3px;
+  margin: 5px;
+  min-width: 750px;
+  height: 400px;
+}
+// #mainContainer {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+//     align-items: center;
+//     background-color:rgba(9, 189, 255, 0.5);
+//     min-width: 750px;
+//     animation-name: headerAnim;
+//     animation-duration: 7s;
+//     animation-iteration-count: infinite;
+//     border: 0px;
+//     border-top-left-radius: 8px;
+//     border-top-right-radius: 8px;
+// }
+
+body {
+  background-image: url('../assets/background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+h2 {
+    color: white;
+}
+
+.verticalFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 0px;
+  min-width: 1020px;
+  width: 100%;
+  // max-width: 100%;
+  color: white;
+  min-height: 350px;
+  align-items: center;
+  background-color:rgba(9, 189, 255, 0.5);
+  border-radius: 8px;
+  animation-name: mainAnim;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+
+}
+  
 .horizontalFlex {
     display: flex;
+    flex-flow: row;
+    width: 100%;
+    min-width: 1020px;
+    // width: 300px;
     justify-content: space-between;
     align-items: center;
 }
@@ -33,26 +181,43 @@ h2 {
     margin: 5px;
 }
 
+.namespaceButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .gridTree {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(50px, 1fr));
+    // display: grid;
+    // grid-template-columns: repeat(1, minmax(50px, 1fr));
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: rgb(196, 204, 246);
     border: 1px solid black;
     border-radius: 3px;
     margin: 5px;
-    width: 1000px;
+    min-width: 750px;
     height: 400px;
 }
 
 button {
-    border-color: black;
-    border-radius: 4px;
-    border: 1px solid transparent;
-    padding: 6px 12px 6px 12px;
-    margin: 2.5px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color:rgb(53, 151, 255);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  box-shadow: 0 3px 3px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  padding: 5px 8px 5px 8px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
-
+textarea:focus, input:focus{
+  outline: none;
+}
 button:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 6px 6px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     cursor: pointer;
 }
